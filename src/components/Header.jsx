@@ -10,7 +10,8 @@ const Header = ({ onSidebarToggle }) => {
           display: "flex",
           justifyContent: "space-between",
           background: "#001233",
-          minHeight: "100vh"
+          minHeight: "100vh",
+          minWidth: "100vh"
         }}
       >
         <Button

@@ -3,8 +3,11 @@ import { Drawer, List, ListItem, Button, Typography } from "@mui/material";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import HistoryIcon from "@mui/icons-material/History";
 import PageIcon from "./images/pageicon.png";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = ({ isOpen, onClose }) => {
+  const navigate = useNavigate()
+  
   return (
     <Drawer open={isOpen} onClose={onClose}>
       <List sx={{ background: "#001233", height: "100vh", padding: "10px" }}>
@@ -57,7 +60,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 color: "white",
               },
             }}
-            onClick={onClose}
+            onClick={() => {navigate("/"); onClose()}}
           >
             <Typography sx={{ fontWeight: "bold", color: "black" }}>
               User List
@@ -98,7 +101,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 color: "white",
               },
             }}
-            onClick={onClose}
+            onClick={() => {navigate("/Modal"); onClose()}}
           >
             <Typography sx={{ fontWeight: "bold", color: "black" }}>
               Log History

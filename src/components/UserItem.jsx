@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Typography, IconButton, ButtonGroup } from "@mui/material";
+import { Typography, IconButton, ButtonGroup, Box } from "@mui/material";
 import Avatar from "@mui/joy/Avatar";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
@@ -7,9 +7,22 @@ import CardOverflow from "@mui/joy/CardOverflow";
 import CardActions from "@mui/joy/CardActions";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import Modal from "@mui/material/Modal";
+import UserForm from "./UserForm";
+
+const ModalStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  boxShadow: 24,
+};
 
 const UserItem = (props) => {
   const { name, country, email, telefono, id } = props.user;
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   return (
     <Card
       sx={{
@@ -27,7 +40,9 @@ const UserItem = (props) => {
             "--Avatar-size": "8rem",
           }}
         />
-        <Typography sx={{paddingTop: "10px", fontWeight: "bold", color: "black" }}>
+        <Typography
+          sx={{ paddingTop: "10px", fontWeight: "bold", color: "black" }}
+        >
           {name}
         </Typography>
       </CardContent>
@@ -41,11 +56,16 @@ const UserItem = (props) => {
               bgcolor: "background.surface",
             }}
           >
-            <IconButton>
+            <IconButton onClick={handleOpen}>
               <MoreHorizIcon
                 sx={{ width: "40px", height: "40px", color: "black" }}
               />
             </IconButton>
+            <Modal open={open} onClose={handleClose}>
+              <Box sx={ModalStyle}>
+                <UserForm onClose={handleClose}/>
+              </Box>
+            </Modal>
             <IconButton>
               <DeleteForeverIcon
                 sx={{ width: "40px", height: "40px", color: "red" }}

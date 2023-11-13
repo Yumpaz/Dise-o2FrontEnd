@@ -18,7 +18,7 @@ const Layout = (props) => {
     <>
       <Header onSidebarToggle={openSidebar} />
       <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
-      <Container maxWidth="lg" sx={{ marginTop: "75px" }} >{props.children}</Container>
+      <Container sx={{ marginTop: "75px" }} >{props.children}</Container>
     </>
   );
 }
