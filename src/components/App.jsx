@@ -3,6 +3,7 @@ import Layout from "../Layout";
 import UserList from "../pages/UserList";
 import { Container } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom" 
+import LogPage from "../pages/LogPage/Logs";
 
 const App = () => {
   return (
@@ -11,6 +12,7 @@ const App = () => {
       <Layout>
         <Routes>
           <Route path ="/" element ={<UserList />}/>
+          <Route path="/log" element={<LogPage />}/>
         </Routes>
       </Layout>
     </Container>
