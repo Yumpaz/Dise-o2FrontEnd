@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./style.css";
 import {
   Box,
@@ -17,8 +17,18 @@ import Avatar from "@mui/joy/Avatar";
 import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-const UserForm = ({ onClose }) => {
+const UserForm = ({ onClose, isnew, nombre }) => {
+  const [value, setValue] = useState(null);
+  let name = "Nombre";
+
+  if(!isnew){
+    name = nombre
+  }
+
   return (
     <Box
       sx={{
@@ -74,22 +84,26 @@ const UserForm = ({ onClose }) => {
         </Stack>
         <Stack
           direction="row"
-          sx={{ marginTop: "20px", justifyContent: "space-evenly" }}
+          sx={{ marginTop: "30px", justifyContent: "space-evenly" }}
         >
           <Stack direction="column" spacing={2}>
             <TextField
-              label="Nombre"
+              label={name}
               variant="filled"
               helperText="Ingresa tu nombre"
               sx={{
                 "& label": { color: "grey" },
-                "& input": { color: "white" },
-                "& .MuiFilledInput-root": { background: "#000E26" },
+                "& input": { color: "black" },
+                "& .MuiFilledInput-root": { background: "white" },
                 "& .MuiFormHelperText-root": { color: "grey" },
               }}
             />
             <FormControl>
-              <FormLabel sx={{ color: "white" }}>Tipo de documento</FormLabel>
+              <FormLabel
+                sx={{ color: "white", "&.Mui-focused": { color: "white" } }}
+              >
+                Tipo de documento
+              </FormLabel>
               <RadioGroup row>
                 <FormControlLabel
                   value="cedula"
@@ -106,7 +120,11 @@ const UserForm = ({ onClose }) => {
               </RadioGroup>
             </FormControl>
             <FormControl>
-              <FormLabel sx={{ color: "white" }}>Género</FormLabel>
+              <FormLabel
+                sx={{ color: "white", "&.Mui-focused": { color: "white" } }}
+              >
+                Género
+              </FormLabel>
               <RadioGroup row>
                 <Stack direction="column">
                   <FormControlLabel
@@ -138,6 +156,21 @@ const UserForm = ({ onClose }) => {
                 </Stack>
               </RadioGroup>
             </FormControl>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                value={value}
+                onChange={(newValue) => setValue(newValue)}
+                sx={{
+                  '& .MuiInputBase-input': {
+                    color: 'black',
+                    background: 'white',
+                  },
+                  '& .MuiSvgIcon-root': {
+                    color: 'white'
+                  },
+                }}
+              />
+            </LocalizationProvider>
           </Stack>
           <Stack direction="column" spacing={2}>
             <TextField
@@ -146,8 +179,8 @@ const UserForm = ({ onClose }) => {
               helperText="Ingresa tu apellido"
               sx={{
                 "& label": { color: "grey" },
-                "& input": { color: "white" },
-                "& .MuiFilledInput-root": { background: "#000E26" },
+                "& input": { color: "black" },
+                "& .MuiFilledInput-root": { background: "white" },
                 "& .MuiFormHelperText-root": { color: "grey" },
               }}
             />
@@ -157,8 +190,8 @@ const UserForm = ({ onClose }) => {
               helperText="Ingresa tu número de documento"
               sx={{
                 "& label": { color: "grey" },
-                "& input": { color: "white" },
-                "& .MuiFilledInput-root": { background: "#000E26" },
+                "& input": { color: "black" },
+                "& .MuiFilledInput-root": { background: "white" },
                 "& .MuiFormHelperText-root": { color: "grey" },
               }}
             />
@@ -168,7 +201,7 @@ const UserForm = ({ onClose }) => {
               helperText="Ingresa tu email"
               sx={{
                 "& label": { color: "grey" },
-                "& input": { color: "white" },
+                "& input": { color: "black" },
                 "& .MuiFilledInput-root": { background: "white" },
                 //000E26
                 "& .MuiFormHelperText-root": { color: "grey" },
@@ -180,47 +213,47 @@ const UserForm = ({ onClose }) => {
               helperText="Ingresa tu número de celular"
               sx={{
                 "& label": { color: "grey" },
-                "& input": { color: "white" },
-                "& .MuiFilledInput-root": { background: "#000E26" },
+                "& input": { color: "black" },
+                "& .MuiFilledInput-root": { background: "white" },
                 "& .MuiFormHelperText-root": { color: "grey" },
               }}
             />
           </Stack>
         </Stack>
         <Button
-            variant="outlined"
-            startIcon={
-              <CheckIcon
-                sx={{ width: "30px", height: "30px", color: "black" }}
-              />
-            }
-            sx={{
-              display: "flex",
-              alignSelf: "center",
-              flexdirection: "row",
-              justifycontent: "center",
-              alignitems: "center",
-              gap: "6px",
-              marginTop: "20px",
-              position: "relative",
-              width: "206px",
-              height: "60px",
-              background: "#FF595A",
-              boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-              borderradius: "8px",
-              "&:hover .MuiTypography-root": {
-                color: "white",
-              },
-              "&:hover .MuiSvgIcon-root": {
-                color: "white",
-              },
-            }}
-            onClick={onClose}
-          >
-            <Typography sx={{ fontWeight: "bold", color: "black" }}>
-              Confirmar
-            </Typography>
-          </Button>
+          variant="outlined"
+          startIcon={
+            <CheckIcon sx={{ width: "30px", height: "30px", color: "black" }} />
+          }
+          sx={{
+            display: "flex",
+            alignSelf: "center",
+            flexdirection: "row",
+            justifycontent: "center",
+            alignitems: "center",
+            gap: "6px",
+            marginTop: "30px",
+            position: "relative",
+            width: "206px",
+            height: "60px",
+            background: "#FF595A",
+            boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+            borderradius: "8px",
+            "&:hover .MuiTypography-root": {
+              color: "white",
+            },
+            "&:hover .MuiSvgIcon-root": {
+              color: "white",
+            },
+          }}
+          onClick={onClose}
+        >
+          {isnew ? (<Typography sx={{ fontWeight: "bold", color: "black" }}>
+            Crear
+          </Typography>) : (<Typography sx={{ fontWeight: "bold", color: "black" }}>
+            Actualizar
+          </Typography>)}
+        </Button>
       </Stack>
     </Box>
   );

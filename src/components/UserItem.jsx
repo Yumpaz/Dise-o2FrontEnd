@@ -10,19 +10,12 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Modal from "@mui/material/Modal";
 import UserForm from "./UserForm";
 
-const ModalStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  boxShadow: 24,
-};
-
 const UserItem = (props) => {
   const { name, country, email, telefono, id } = props.user;
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
   return (
     <Card
       sx={{
@@ -62,8 +55,16 @@ const UserItem = (props) => {
               />
             </IconButton>
             <Modal open={open} onClose={handleClose}>
-              <Box sx={ModalStyle}>
-                <UserForm onClose={handleClose}/>
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  boxShadow: 24,
+                }}
+              >
+                <UserForm onClose={handleClose} isnew={false} nombre={name}/>
               </Box>
             </Modal>
             <IconButton>
