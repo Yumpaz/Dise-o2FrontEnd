@@ -108,7 +108,7 @@ const UserForm = ({ onClose, isnew, name, lastname, doctype, docnumber, gender, 
               >
                 Tipo de documento
               </FormLabel>
-              <RadioGroup row value={doctypeValue} onChange={(newValue) => setDoctypeValue(newValue)}>
+              <RadioGroup row value={doctypeValue} onChange={(e) => setDoctypeValue(e.target.value)}>
                 <FormControlLabel
                   value="cedula"
                   control={<Radio sx={{ color: "white" }} />}
@@ -129,7 +129,7 @@ const UserForm = ({ onClose, isnew, name, lastname, doctype, docnumber, gender, 
               >
                 Género
               </FormLabel>
-              <RadioGroup row value={genderValue} onChange={(newValue) => setGenderValue(newValue)}>
+              <RadioGroup row value={genderValue} onChange={(e) => setGenderValue(e.target.value)}>
                 <Stack direction="column">
                   <FormControlLabel
                     value="female"
