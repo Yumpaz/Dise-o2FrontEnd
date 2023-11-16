@@ -23,8 +23,13 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 const UserForm = ({ onClose, isnew, name, lastname, doctype, docnumber, gender, email, birthdate, phone }) => {
   const [value, setValue] = useState(null);
-  const [doctypevalue, setdoctypevalue] = useState(doctype)
-  const [gendervalue, setgendervalue] = useState(gender)
+  const [nameValue, setNameValue] = useState(name);
+  const [lastnameValue, setLastnameValue] = useState(lastname);
+  const [doctypeValue, setDoctypeValue] = useState(doctype);
+  const [docnumberValue, setDocnumberValue] = useState(docnumber);
+  const [genderValue, setGenderValue] = useState(gender);
+  const [emailValue, setEmailValue] = useState(email);
+  const [phoneValue, setPhoneValue] = useState(phone);
 
   return (
     <Box
@@ -85,9 +90,9 @@ const UserForm = ({ onClose, isnew, name, lastname, doctype, docnumber, gender, 
         >
           <Stack direction="column" spacing={2}>
             <TextField
-              onChange={(newValue) => setdoctypevalue(newValue)}
               label="Nombres"
-              value={name}
+              value={nameValue}
+              onChange={(e) => setNameValue(e.target.value)}
               variant="filled"
               helperText="Ingresa tu nombre"
               sx={{
@@ -103,7 +108,7 @@ const UserForm = ({ onClose, isnew, name, lastname, doctype, docnumber, gender, 
               >
                 Tipo de documento
               </FormLabel>
-              <RadioGroup row value={doctypevalue} onChange={(newValue) => setdoctypevalue(newValue)}>
+              <RadioGroup row value={doctypeValue} onChange={(newValue) => setDoctypeValue(newValue)}>
                 <FormControlLabel
                   value="cedula"
                   control={<Radio sx={{ color: "white" }} />}
@@ -124,7 +129,7 @@ const UserForm = ({ onClose, isnew, name, lastname, doctype, docnumber, gender, 
               >
                 Género
               </FormLabel>
-              <RadioGroup row value={gendervalue} onChange={(newValue) => setgendervalue(newValue)}>
+              <RadioGroup row value={genderValue} onChange={(newValue) => setGenderValue(newValue)}>
                 <Stack direction="column">
                   <FormControlLabel
                     value="female"
@@ -176,7 +181,8 @@ const UserForm = ({ onClose, isnew, name, lastname, doctype, docnumber, gender, 
           <Stack direction="column" spacing={2}>
             <TextField
               label="Apellidos"
-              value={lastname}
+              value={lastnameValue}
+              onChange={(e) => setLastnameValue(e.target.value)}
               variant="filled"
               helperText="Ingresa tu apellido"
               sx={{
@@ -187,7 +193,8 @@ const UserForm = ({ onClose, isnew, name, lastname, doctype, docnumber, gender, 
             />
             <TextField
               label="Número de documento"
-              value={docnumber}
+              value={docnumberValue}
+              onChange={(e) => setDocnumberValue(e.target.value)}
               variant="filled"
               helperText="Ingresa tu número de documento"
               sx={{
@@ -198,7 +205,8 @@ const UserForm = ({ onClose, isnew, name, lastname, doctype, docnumber, gender, 
             />
             <TextField
               label="Email"
-              value={email}
+              value={emailValue}
+              onChange={(e) => setEmailValue(e.target.value)}
               variant="filled"
               helperText="Ingresa tu email"
               sx={{
@@ -209,7 +217,8 @@ const UserForm = ({ onClose, isnew, name, lastname, doctype, docnumber, gender, 
             />
             <TextField
               label="Célular"
-              value={phone}
+              value={phoneValue}
+              onChange={(e) => setPhoneValue(e.target.value)}
               variant="filled"
               helperText="Ingresa tu número de celular"
               sx={{
