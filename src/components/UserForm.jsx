@@ -19,10 +19,16 @@ import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import dayjs from 'dayjs';
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
+function getinitialdate(birthdate) {
+  const [month, day, year] = birthdate.split('/');
+  return `${year}-${day}-${month}`
+}
+
 const UserForm = ({ onClose, isnew, name, lastname, doctype, docnumber, gender, email, birthdate, phone }) => {
-  const [value, setValue] = useState(null);
+  const [birthdateValue, setBirthdateValue] = useState(birthdate ? getinitialdate(birthdate) : null);
   const [nameValue, setNameValue] = useState(name);
   const [lastnameValue, setLastnameValue] = useState(lastname);
   const [doctypeValue, setDoctypeValue] = useState(doctype);
@@ -162,8 +168,8 @@ const UserForm = ({ onClose, isnew, name, lastname, doctype, docnumber, gender, 
             </FormControl>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                value={value}
-                onChange={(newValue) => setValue(newValue)}
+                value={dayjs(birthdateValue)}
+                onChange={(newValue) => setBirthdateValue(newValue)}
                 sx={{
                   '& .MuiInputBase-input': {
                     color: 'white',
