@@ -21,20 +21,17 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-const UserForm = ({ onClose, isnew, nombre }) => {
+const UserForm = ({ onClose, isnew, name, lastname, doctype, docnumber, gender, email, birthdate, phone }) => {
   const [value, setValue] = useState(null);
-  let name = "Nombre";
-
-  if(!isnew){
-    name = nombre
-  }
+  const [doctypevalue, setdoctypevalue] = useState(doctype)
+  const [gendervalue, setgendervalue] = useState(gender)
 
   return (
     <Box
       sx={{
         height: "80vh",
         width: "80vh",
-        background: "#001233",
+        background: "#01214F",
       }}
     >
       <Stack direction="column">
@@ -88,13 +85,15 @@ const UserForm = ({ onClose, isnew, nombre }) => {
         >
           <Stack direction="column" spacing={2}>
             <TextField
-              label={name}
+              onChange={(newValue) => setdoctypevalue(newValue)}
+              label="Nombres"
+              value={name}
               variant="filled"
               helperText="Ingresa tu nombre"
               sx={{
-                "& label": { color: "grey" },
-                "& input": { color: "black" },
-                "& .MuiFilledInput-root": { background: "white" },
+                outline:"",
+                "& label": { color: "white" },
+                "& input": { color: "white" },
                 "& .MuiFormHelperText-root": { color: "grey" },
               }}
             />
@@ -104,7 +103,7 @@ const UserForm = ({ onClose, isnew, nombre }) => {
               >
                 Tipo de documento
               </FormLabel>
-              <RadioGroup row>
+              <RadioGroup row value={doctypevalue} onChange={(newValue) => setdoctypevalue(newValue)}>
                 <FormControlLabel
                   value="cedula"
                   control={<Radio sx={{ color: "white" }} />}
@@ -112,7 +111,7 @@ const UserForm = ({ onClose, isnew, nombre }) => {
                   sx={{ "& .MuiTypography-root": { color: "white" } }}
                 />
                 <FormControlLabel
-                  value="tarjetaidentidad"
+                  value="ti"
                   control={<Radio sx={{ color: "white" }} />}
                   label="Tarjeta de identidad"
                   sx={{ "& .MuiTypography-root": { color: "white" } }}
@@ -125,16 +124,16 @@ const UserForm = ({ onClose, isnew, nombre }) => {
               >
                 Género
               </FormLabel>
-              <RadioGroup row>
+              <RadioGroup row value={gendervalue} onChange={(newValue) => setgendervalue(newValue)}>
                 <Stack direction="column">
                   <FormControlLabel
-                    value="fem"
+                    value="female"
                     control={<Radio sx={{ color: "white" }} />}
                     label="Femenino"
                     sx={{ "& .MuiTypography-root": { color: "white" } }}
                   />
                   <FormControlLabel
-                    value="masc"
+                    value="male"
                     control={<Radio sx={{ color: "white" }} />}
                     label="Masculino"
                     sx={{ "& .MuiTypography-root": { color: "white" } }}
@@ -148,7 +147,7 @@ const UserForm = ({ onClose, isnew, nombre }) => {
                     sx={{ "& .MuiTypography-root": { color: "white" } }}
                   />
                   <FormControlLabel
-                    value="undefined"
+                    value="nodef"
                     control={<Radio sx={{ color: "white" }} />}
                     label="No especificar"
                     sx={{ "& .MuiTypography-root": { color: "white" } }}
@@ -162,8 +161,10 @@ const UserForm = ({ onClose, isnew, nombre }) => {
                 onChange={(newValue) => setValue(newValue)}
                 sx={{
                   '& .MuiInputBase-input': {
-                    color: 'black',
-                    background: 'white',
+                    color: 'white',
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "white"
                   },
                   '& .MuiSvgIcon-root': {
                     color: 'white'
@@ -174,47 +175,46 @@ const UserForm = ({ onClose, isnew, nombre }) => {
           </Stack>
           <Stack direction="column" spacing={2}>
             <TextField
-              label="Apellido"
+              label="Apellidos"
+              value={lastname}
               variant="filled"
               helperText="Ingresa tu apellido"
               sx={{
-                "& label": { color: "grey" },
-                "& input": { color: "black" },
-                "& .MuiFilledInput-root": { background: "white" },
+                "& label": { color: "white" },
+                "& input": { color: "white" },
                 "& .MuiFormHelperText-root": { color: "grey" },
               }}
             />
             <TextField
-              label="Nro Documento"
+              label="Número de documento"
+              value={docnumber}
               variant="filled"
               helperText="Ingresa tu número de documento"
               sx={{
-                "& label": { color: "grey" },
-                "& input": { color: "black" },
-                "& .MuiFilledInput-root": { background: "white" },
+                "& label": { color: "white" },
+                "& input": { color: "white" },
                 "& .MuiFormHelperText-root": { color: "grey" },
               }}
             />
             <TextField
               label="Email"
+              value={email}
               variant="filled"
               helperText="Ingresa tu email"
               sx={{
-                "& label": { color: "grey" },
-                "& input": { color: "black" },
-                "& .MuiFilledInput-root": { background: "white" },
-                //000E26
+                "& label": { color: "white" },
+                "& input": { color: "white" },
                 "& .MuiFormHelperText-root": { color: "grey" },
               }}
             />
             <TextField
               label="Célular"
+              value={phone}
               variant="filled"
               helperText="Ingresa tu número de celular"
               sx={{
-                "& label": { color: "grey" },
-                "& input": { color: "black" },
-                "& .MuiFilledInput-root": { background: "white" },
+                "& label": { color: "white" },
+                "& input": { color: "white" },
                 "& .MuiFormHelperText-root": { color: "grey" },
               }}
             />

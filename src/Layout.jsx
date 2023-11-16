@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import Container from '@mui/system/Container';
+import { Box } from '@mui/material';
 
 const Layout = (props) => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -15,11 +16,11 @@ const Layout = (props) => {
   };
 
   return (
-    <>
+    <Box sx={{ background: "#FBECD5" }}>
       <Header onSidebarToggle={openSidebar} />
       <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
-      <Container sx={{ marginTop: "75px" }} >{props.children}</Container>
-    </>
+      <Container sx={{ marginTop: "70px"}} >{props.children}</Container>
+    </Box>
   );
 }
 

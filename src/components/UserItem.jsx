@@ -11,7 +11,7 @@ import Modal from "@mui/material/Modal";
 import UserForm from "./UserForm";
 
 const UserItem = (props) => {
-  const { name, country, email, telefono, id } = props.user;
+  const { name, lastname, doctype, docnumber, gender, email, birthdate, phone } = props.user;
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -36,7 +36,7 @@ const UserItem = (props) => {
         <Typography
           sx={{ paddingTop: "10px", fontWeight: "bold", color: "black" }}
         >
-          {name}
+          {name+" "+lastname}
         </Typography>
       </CardContent>
       <CardOverflow sx={{ bgcolor: "background.level1" }}>
@@ -64,7 +64,7 @@ const UserItem = (props) => {
                   boxShadow: 24,
                 }}
               >
-                <UserForm onClose={handleClose} isnew={false} nombre={name}/>
+                <UserForm onClose={handleClose} isnew={false} name={name} lastname={lastname} doctype={doctype} docnumber={docnumber} gender={gender} email={email} birthdate={birthdate} phone={phone}/>
               </Box>
             </Modal>
             <IconButton>
