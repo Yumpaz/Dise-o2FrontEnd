@@ -63,14 +63,13 @@ const Sidebar = ({ isOpen, onClose }) => {
             onClick={() => {navigate("/"); onClose()}}
           >
             <Typography sx={{ fontWeight: "bold", color: "black" }}>
-              User List
+              Lista de Usuarios
             </Typography>
           </Button>
         </ListItem>
         <ListItem
           sx={{
             display: "flex",
-            justifyContent: "center",
             justifyContent: "center",
             paddingBottom: "20px",
           }}
@@ -104,7 +103,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             onClick={() => {navigate("/Modal"); onClose()}}
           >
             <Typography sx={{ fontWeight: "bold", color: "black" }}>
-              Log History
+              Historial de Logs
             </Typography>
           </Button>
         </ListItem>

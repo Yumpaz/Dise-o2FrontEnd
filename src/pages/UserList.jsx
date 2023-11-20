@@ -9,7 +9,7 @@ import UserForm from "../components/UserForm";
 
 const UserList = () => {
   const users = dataList;
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -46,7 +46,7 @@ const UserList = () => {
         onClick={handleOpen}
       >
         <Typography sx={{ fontWeight: "bold", color: "black" }}>
-          Add User
+          Agregar
         </Typography>
       </Button>
       <Modal open={open} onClose={handleClose}>

@@ -25,7 +25,7 @@ const Header = ({ onSidebarToggle }) => {
           <img src={PageIconMini} alt="Icono De Página" width="45" height="45" />
         </Button>
         <Typography variant="h5" sx={{ margin: "auto" }}>
-          USER LIST
+          Lista de Usuarios
         </Typography>
       </Toolbar>
     </AppBar>
