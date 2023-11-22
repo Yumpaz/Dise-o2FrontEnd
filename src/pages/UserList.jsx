@@ -59,7 +59,7 @@ const UserList = () => {
             boxShadow: 24,
           }}
         >
-          <UserForm onClose={handleClose} isnew={true} />
+          <UserForm onClose={handleClose} isnew={true} name={""} secondname={""} lastname={""} doctype={""} docnumber={""} gender={""} email={""} birthdate={""} phone={""}/>
         </Box>
       </Modal>
       <Grid container rowSpacing={4} columnSpacing={{ xs: 2, sm: 4, md: 6 }}>

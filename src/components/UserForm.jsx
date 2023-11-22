@@ -20,26 +20,86 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from 'dayjs';
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import Alert from '@mui/material/Alert';
 
 function getinitialdate(birthdate) {
   const [month, day, year] = birthdate.split('/');
   return `${year}-${day}-${month}`
 }
 
-const UserForm = ({ onClose, isnew, name, lastname, doctype, docnumber, gender, email, birthdate, phone }) => {
+const UserForm = ({ onClose, isnew, name, secondname, lastname, doctype, docnumber, gender, email, birthdate, phone }) => {
   const [birthdateValue, setBirthdateValue] = useState(birthdate ? getinitialdate(birthdate) : null);
   const [nameValue, setNameValue] = useState(name);
+  const [secondnameValue, setsecondnameValue] = useState(secondname);
+  const [isValidSecondname, setisValidSecondname] = useState(true);
+  const [isValidName, setisValidName] = useState(true);
   const [lastnameValue, setLastnameValue] = useState(lastname);
+  const [isValidLastname, setisValidLastname] = useState(true);
   const [doctypeValue, setDoctypeValue] = useState(doctype);
   const [docnumberValue, setDocnumberValue] = useState(docnumber);
+  const [isValidDocnumber, setIsValidDocnumber] = useState(true);
   const [genderValue, setGenderValue] = useState(gender);
   const [emailValue, setEmailValue] = useState(email);
+  const [isValidEmail, setIsValidEmail] = useState(true);
   const [phoneValue, setPhoneValue] = useState(phone);
+  const [isValidPhone, setisValidPhone] = useState(true);
+  const [alert, setAlert] = useState(false);
+
+  //#region Validations
+  const handleEmailChange = (e) => {
+    const newEmail = e.target.value;
+    setEmailValue(newEmail);
+    setIsValidEmail(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail));
+  };
+  const handleDocnumberChange = (e) => {
+    const newDocnumber = e.target.value;
+    setDocnumberValue(newDocnumber);
+    setIsValidDocnumber(/^\d+$/.test(newDocnumber) && newDocnumber.length <= 10);
+  };
+  const handleNombreChange = (e) => {
+    const newNombre = e.target.value;
+    setNameValue(newNombre);
+    setisValidName(/^[^\d]+$/.test(newNombre) && newNombre.length <= 30 && newNombre.trim() !== "" && newNombre.trim() === newNombre);
+  }
+  const handleSegundoNombreChange = (e) => {
+    const newSecond = e.target.value;
+    setsecondnameValue(newSecond);
+    setisValidSecondname(/^[^\d]+$/.test(newSecond) && newSecond.length <= 30 && newSecond.trim() !== "" && newSecond.trim() === newSecond);
+  }
+  const handleApellidoChange = (e) => {
+    const newApellido = e.target.value;
+    setLastnameValue(newApellido);
+    setisValidLastname(/^[^\d]+$/.test(newApellido) && newApellido.length <= 60 && newApellido.trim() !== "" && newApellido.trim() === newApellido);
+  }
+  const handlePhoneChange = (e) => {
+    const newPhone = e.target.value;
+    setPhoneValue(newPhone);
+    setisValidPhone(/^\d+$/.test(newPhone) && newPhone.length === 10)
+  }
+  const handleBirthdateChange = (newValue) => {
+    const newBirthdate = `${newValue.$y}-${(newValue.$M)+1}-${newValue.$D}`
+    setBirthdateValue(newBirthdate);
+  }
+  const handleButtonPress = () => {
+    // eslint-disable-next-line
+    if(nameValue, secondnameValue , lastnameValue , doctypeValue , docnumberValue , genderValue , emailValue , birthdateValue , phoneValue === ""){
+      setAlert(true);
+    }else{
+      setAlert(false);
+      if(isnew){
+        console.log("Crear")
+        onClose();
+      }else{
+        console.log("Actualizar")
+        onClose();
+      }
+    }
+  }
+  //#endregion Validations
 
   return (
     <Box
       sx={{
-        height: "80vh",
         width: "80vh",
         background: "#01214F",
       }}
@@ -93,13 +153,28 @@ const UserForm = ({ onClose, isnew, name, lastname, doctype, docnumber, gender, 
           direction="row"
           sx={{ marginTop: "30px", justifyContent: "space-evenly" }}
         >
-          <Stack direction="column" spacing={2}>
+          <Stack direction="column" spacing={1}>
             <TextField
-              label="Nombres"
+              label="Primer Nombre"
               value={nameValue}
-              onChange={(e) => setNameValue(e.target.value)}
+              error={isValidName === false}
+              onChange={handleNombreChange}
               variant="filled"
-              helperText="Ingresa tu nombre"
+              helperText={isValidName ? "Ingresa tu nombre" : "No usar números y no mayor a 30 caracteres"}
+              sx={{
+                outline:"",
+                "& label": { color: "white" },
+                "& input": { color: "white" },
+                "& .MuiFormHelperText-root": { color: "grey" },
+              }}
+            />
+            <TextField
+              label="Segundo Nombre"
+              value={secondnameValue}
+              error={isValidSecondname === false}
+              onChange={handleSegundoNombreChange}
+              variant="filled"
+              helperText={isValidName ? "Ingresa tu segundo nombre" : "No usar números y no mayor a 30 caracteres"}
               sx={{
                 outline:"",
                 "& label": { color: "white" },
@@ -168,7 +243,7 @@ const UserForm = ({ onClose, isnew, name, lastname, doctype, docnumber, gender, 
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 value={dayjs(birthdateValue)}
-                onChange={(newValue) => setBirthdateValue(newValue)}
+                onChange={(newValue) => handleBirthdateChange(newValue)}
                 sx={{
                   '& .MuiInputBase-input': {
                     color: 'white',
@@ -183,13 +258,14 @@ const UserForm = ({ onClose, isnew, name, lastname, doctype, docnumber, gender, 
               />
             </LocalizationProvider>
           </Stack>
-          <Stack direction="column" spacing={2}>
+          <Stack direction="column" spacing={4}>
             <TextField
               label="Apellidos"
               value={lastnameValue}
-              onChange={(e) => setLastnameValue(e.target.value)}
+              error={isValidLastname === false}
+              onChange={handleApellidoChange}
               variant="filled"
-              helperText="Ingresa tu apellido"
+              helperText={isValidLastname ? "Ingresa tu apellido" : "No usar número y no mayor a 60 caracteres"}
               sx={{
                 "& label": { color: "white" },
                 "& input": { color: "white" },
@@ -199,9 +275,10 @@ const UserForm = ({ onClose, isnew, name, lastname, doctype, docnumber, gender, 
             <TextField
               label="Número de documento"
               value={docnumberValue}
-              onChange={(e) => setDocnumberValue(e.target.value)}
+              error={isValidDocnumber === false}
+              onChange={handleDocnumberChange}
               variant="filled"
-              helperText="Ingresa tu número de documento"
+              helperText={isValidDocnumber ? "Ingresa tu número de documento" : "Solo números y no mayor a 10 caracteres"}
               sx={{
                 "& label": { color: "white" },
                 "& input": { color: "white" },
@@ -211,9 +288,10 @@ const UserForm = ({ onClose, isnew, name, lastname, doctype, docnumber, gender, 
             <TextField
               label="Email"
               value={emailValue}
-              onChange={(e) => setEmailValue(e.target.value)}
+              error = {isValidEmail === false}
+              onChange={handleEmailChange}
               variant="filled"
-              helperText="Ingresa tu email"
+              helperText={isValidEmail ? "Ingresa tu email" : "Formato de email invalido"}
               sx={{
                 "& label": { color: "white" },
                 "& input": { color: "white" },
@@ -223,9 +301,10 @@ const UserForm = ({ onClose, isnew, name, lastname, doctype, docnumber, gender, 
             <TextField
               label="Célular"
               value={phoneValue}
-              onChange={(e) => setPhoneValue(e.target.value)}
+              error = {isValidPhone === false}
+              onChange={handlePhoneChange}
               variant="filled"
-              helperText="Ingresa tu número de celular"
+              helperText={isValidPhone ? "Ingresa tu número de celular" : "Solo números y debe ser de 10 caracteres"}
               sx={{
                 "& label": { color: "white" },
                 "& input": { color: "white" },
@@ -236,6 +315,7 @@ const UserForm = ({ onClose, isnew, name, lastname, doctype, docnumber, gender, 
         </Stack>
         <Button
           variant="outlined"
+          disabled={!isValidEmail || !isValidDocnumber || !isValidName || !isValidLastname || !isValidPhone}
           startIcon={
             <CheckIcon sx={{ width: "30px", height: "30px", color: "black" }} />
           }
@@ -246,9 +326,9 @@ const UserForm = ({ onClose, isnew, name, lastname, doctype, docnumber, gender, 
             justifycontent: "center",
             alignitems: "center",
             gap: "6px",
-            marginTop: "30px",
+            margin: "15px",
             position: "relative",
-            width: "206px",
+            width: "200px",
             height: "60px",
             background: "#FF595A",
             boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
@@ -259,8 +339,11 @@ const UserForm = ({ onClose, isnew, name, lastname, doctype, docnumber, gender, 
             "&:hover .MuiSvgIcon-root": {
               color: "white",
             },
+            '&:disabled': {
+              backgroundColor: '#BD4243'
+            },
           }}
-          onClick={onClose}
+          onClick={handleButtonPress}
         >
           {isnew ? (<Typography sx={{ fontWeight: "bold", color: "black" }}>
             Crear
@@ -268,6 +351,7 @@ const UserForm = ({ onClose, isnew, name, lastname, doctype, docnumber, gender, 
             Actualizar
           </Typography>)}
         </Button>
+        {alert ? <Alert severity='error'>Llena todos los campos</Alert> : <></> }
       </Stack>
     </Box>
   );

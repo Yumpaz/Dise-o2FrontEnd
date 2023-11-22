@@ -2,6 +2,7 @@ const userList = [
     {
       id: "1",
       name: "Miguel",
+      secondname: "Angel",
       lastname: "Marsiglia",
       doctype: "cedula",
       docnumber: "1005575799",
@@ -13,6 +14,7 @@ const userList = [
     {
       id: "2",
       name: "Fredy",
+      secondname: "Angel",
       lastname: "Marsiglia",
       doctype: "cedula",
       docnumber: "697803243",
@@ -24,6 +26,7 @@ const userList = [
     {
       id: "3",
       name: "Felipe",
+      secondname: "Angel",
       lastname: "De Lima",
       doctype: "cedula",
       docnumber: "101019238",
@@ -35,6 +38,7 @@ const userList = [
     {
       id: "4",
       name: "Sonya",
+      secondname: "Angel",
       lastname: "Castro",
       doctype: "cedula",
       docnumber: "101238239",
@@ -46,6 +50,7 @@ const userList = [
     {
       id: "5",
       name: "Melissa",
+      secondname: "Angel",
       lastname: "Muriel",
       doctype: "ti",
       docnumber: "1005575799",
@@ -57,6 +62,7 @@ const userList = [
     {
       id: "6",
       name: "Melissa",
+      secondname: "Angel",
       lastname: "Riquelme",
       doctype: "cedula",
       docnumber: "1005575799",
@@ -68,6 +74,7 @@ const userList = [
     {
       id: "7",
       name: "Rodolfo",
+      secondname: "Angel",
       lastname: "Arroyo",
       doctype: "cedula",
       docnumber: "1005575799",
@@ -79,6 +86,7 @@ const userList = [
     {
       id: "8",
       name: "Luz",
+      secondname: "Angel",
       lastname: "Marina",
       doctype: "cedula",
       docnumber: "1005575799",
@@ -90,6 +98,7 @@ const userList = [
     {
       id: "9",
       name: "Sebastian",
+      secondname: "Angel",
       lastname: "Mieles",
       doctype: "cedula",
       docnumber: "1005575799",
@@ -101,6 +110,7 @@ const userList = [
     {
       id: "10",
       name: "Miguel",
+      secondname: "Angel",
       lastname: "Marsiglia",
       doctype: "cedula",
       docnumber: "1005575799",
@@ -112,6 +122,7 @@ const userList = [
     {
       id: "11",
       name: "Miguel",
+      secondname: "Angel",
       lastname: "Marsiglia",
       doctype: "cedula",
       docnumber: "1005575799",
@@ -123,6 +134,7 @@ const userList = [
     {
       id: "12",
       name: "Miguel",
+      secondname: "Angel",
       lastname: "Marsiglia",
       doctype: "cedula",
       docnumber: "1005575799",
@@ -134,6 +146,7 @@ const userList = [
     {
       id: "13",
       name: "Miguel",
+      secondname: "Angel",
       lastname: "Marsiglia",
       doctype: "cedula",
       docnumber: "1005575799",

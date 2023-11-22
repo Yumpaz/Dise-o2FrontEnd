@@ -11,7 +11,7 @@ import Modal from "@mui/material/Modal";
 import UserForm from "./UserForm";
 
 const UserItem = (props) => {
-  const { name, lastname, doctype, docnumber, gender, email, birthdate, phone } = props.user;
+  const { name, secondname, lastname, doctype, docnumber, gender, email, birthdate, phone } = props.user;
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -64,7 +64,7 @@ const UserItem = (props) => {
                   boxShadow: 24,
                 }}
               >
-                <UserForm onClose={handleClose} isnew={false} name={name} lastname={lastname} doctype={doctype} docnumber={docnumber} gender={gender} email={email} birthdate={birthdate} phone={phone}/>
+                <UserForm onClose={handleClose} isnew={false} name={name} secondname={secondname} lastname={lastname} doctype={doctype} docnumber={docnumber} gender={gender} email={email} birthdate={birthdate} phone={phone}/>
               </Box>
             </Modal>
             <IconButton>
