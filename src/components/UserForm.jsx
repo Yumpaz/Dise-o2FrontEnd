@@ -282,7 +282,7 @@ const UserForm = ({ onClose, isnew, name, secondname, lastname, doctype, docnumb
               sx={{
                 "& label": { color: "white" },
                 "& input": { color: "white" },
-                "& .MuiFormHelperText-root": { color: "grey" },
+                "& .MuiFormHelperText-root": {color: "grey"},
               }}
             />
             <TextField

@@ -5,7 +5,7 @@ import HistoryIcon from "@mui/icons-material/History";
 import PageIcon from "./images/pageicon.png";
 import { useNavigate } from "react-router-dom";
 
-const Sidebar = ({ isOpen, onClose }) => {
+const Sidebar = ({ isOpen, onClose, onUser, onLog }) => {
   const navigate = useNavigate()
   
   return (
@@ -60,7 +60,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 color: "white",
               },
             }}
-            onClick={() => {navigate("/"); onClose()}}
+            onClick={() => {navigate("/"); onUser(); onClose()}}
           >
             <Typography sx={{ fontWeight: "bold", color: "black" }}>
               Lista de Usuarios
@@ -100,7 +100,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 color: "white",
               },
             }}
-            onClick={() => {navigate("/Modal"); onClose()}}
+            onClick={() => {navigate("/Logs"); onLog(); onClose()}}
           >
             <Typography sx={{ fontWeight: "bold", color: "black" }}>
               Historial de Logs

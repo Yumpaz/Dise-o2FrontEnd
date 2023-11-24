@@ -2,7 +2,7 @@ import React from "react";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 import PageIconMini from "./images/pageiconmini.png";
 
-const Header = ({ onSidebarToggle }) => {
+const Header = ({ onSidebarToggle, texto }) => {
   return (
     <AppBar position="fixed">
       <Toolbar
@@ -25,7 +25,7 @@ const Header = ({ onSidebarToggle }) => {
           <img src={PageIconMini} alt="Icono De Página" width="45" height="45" />
         </Button>
         <Typography variant="h5" sx={{ margin: "auto" }}>
-          Lista de Usuarios
+          {texto}
         </Typography>
       </Toolbar>
     </AppBar>
