@@ -29,45 +29,59 @@ const LogList = () => {
   const [DocType, setDocType] = useState("");
   const [searchDocNumber, setsearchDocNumber] = useState("");
   const [isValidDocNumber, setIsValidDocNumber] = useState(true);
-  const [Datei, setDatei] = useState("1900-01-01");
-  const [Datef, setDatef] = useState("9999-12-31");
+  const [Datei, setDatei] = useState("");
+  const [Datef, setDatef] = useState("");
   const filteredRows = logs.filter((log) => {
     let Dateidespues = true;
     let Datefantes = true;
-    const [day, month , year] = log.date.split("/");
-    const Dateicheck = dayjs(Datei)
-    const Datefcheck = dayjs(Datef)
-    const [monthi, dayi, yeari,] = [(Dateicheck.$M)+1, Dateicheck.$D, Dateicheck.$y]
-    const [monthf, dayf, yearf,] = [(Datefcheck.$M)+1, Datefcheck.$D, Datefcheck.$y]
-    if(yeari > year){
-        Dateidespues = false
-    }else{
-        if(monthi > month){
-            Dateidespues = false
-        }else{
-            if(dayi > day){
-                Dateidespues = false
-            }else{
-                Dateidespues = true
-            }
+    const [day, month, year] = log.date.split("/");
+    if (Datei !== "") {
+      const Dateicheck = dayjs(Datei);
+      const [monthi, dayi, yeari] = [
+        Dateicheck.$M + 1,
+        Dateicheck.$D,
+        Dateicheck.$y,
+      ];
+      if (yeari > year) {
+        Dateidespues = false;
+      } else {
+        if (monthi > month && yeari === year) {
+          Dateidespues = false;
+        } else {
+          if (dayi > day && monthi === month && yeari === year) {
+            Dateidespues = false;
+          } else {
+            Dateidespues = true;
+          }
         }
+      }
     }
-    if(yearf < year){
-        Datefantes = false
-    }else{
-        if(monthf < month){
-            Datefantes = false
-        }else{
-            if(dayf < day){
-                Datefantes = false
-            }else{
-                Datefantes = true
-            }
+    if (Datef !== "") {
+      const Datefcheck = dayjs(Datef);
+      const [monthf, dayf, yearf] = [
+        Datefcheck.$M + 1,
+        Datefcheck.$D,
+        Datefcheck.$y,
+      ];
+      if (yearf < year) {
+        Datefantes = false;
+      } else {
+        if (monthf < month && yearf === year) {
+          Datefantes = false;
+        } else {
+          if (dayf < day && monthf === month && yearf === year) {
+            Datefantes = false;
+          } else {
+            Datefantes = true;
+          }
         }
+      }
     }
-    console.log("Dateidespues: "+Dateidespues+" Dateiantes: "+Datefantes)
     return (
-      log.docnumber.includes(searchDocNumber) && log.doctype.includes(DocType) && Dateidespues === true && Datefantes === true
+      log.docnumber.includes(searchDocNumber) &&
+      log.doctype.includes(DocType) &&
+      Dateidespues === true &&
+      Datefantes === true
     );
   });
 
@@ -164,7 +178,7 @@ const LogList = () => {
           <TableBody>
             {filteredRows.map((row) => (
               <TableRow
-                key={row.doc}
+                key={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell align="center">

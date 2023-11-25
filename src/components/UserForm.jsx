@@ -69,7 +69,7 @@ const UserForm = ({ onClose, isnew, name, secondname, lastname, doctype, docnumb
   const handleApellidoChange = (e) => {
     const newApellido = e.target.value;
     setLastnameValue(newApellido);
-    setisValidLastname(/^[^\d]+$/.test(newApellido) && newApellido.length <= 60 && newApellido.trim() !== "" && newApellido.trim() === newApellido);
+    setisValidLastname(/^[^\d]+$/.test(newApellido) && newApellido.length <= 60 && newApellido.trim() !== "");
   }
   const handlePhoneChange = (e) => {
     const newPhone = e.target.value;

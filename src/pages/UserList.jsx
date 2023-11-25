@@ -24,9 +24,9 @@ const UserList = () => {
         }
         sx={{
           display: "flex",
-          flexdirection: "row",
-          justifycontent: "center",
-          alignitems: "center",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
           gap: "6px",
           position: "absolute",
           top: "0",
@@ -35,7 +35,7 @@ const UserList = () => {
           height: "60px",
           background: "#FF595A",
           boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-          borderradius: "8px",
+          borderRadius: "8px",
           "&:hover .MuiTypography-root": {
             color: "white",
           },
