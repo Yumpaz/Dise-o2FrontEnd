@@ -23,8 +23,8 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Alert from '@mui/material/Alert';
 
 function getinitialdate(birthdate) {
-  const [month, day, year] = birthdate.split('/');
-  return `${year}-${day}-${month}`
+  const [day, month, year] = birthdate.split('/');
+  return `${year}-${month}-${day}`
 }
 
 const UserForm = ({ onClose, isnew, name, secondname, lastname, doctype, docnumber, gender, email, birthdate, phone }) => {
@@ -165,7 +165,9 @@ const UserForm = ({ onClose, isnew, name, secondname, lastname, doctype, docnumb
                 outline:"",
                 "& label": { color: "white" },
                 "& input": { color: "white" },
-                "& .MuiFormHelperText-root": { color: "grey" },
+                "& .MuiFormHelperText-root": {
+                  color: isValidName ? "grey" : "red"
+                }
               }}
             />
             <TextField
@@ -174,12 +176,14 @@ const UserForm = ({ onClose, isnew, name, secondname, lastname, doctype, docnumb
               error={isValidSecondname === false}
               onChange={handleSegundoNombreChange}
               variant="filled"
-              helperText={isValidName ? "Ingresa tu segundo nombre" : "No usar números y no mayor a 30 caracteres"}
+              helperText={isValidSecondname ? "Ingresa tu segundo nombre" : "No usar números y no mayor a 30 caracteres"}
               sx={{
                 outline:"",
                 "& label": { color: "white" },
                 "& input": { color: "white" },
-                "& .MuiFormHelperText-root": { color: "grey" },
+                "& .MuiFormHelperText-root": {
+                  color: isValidSecondname ? "grey" : "red"
+                }
               }}
             />
             <FormControl>
@@ -242,6 +246,7 @@ const UserForm = ({ onClose, isnew, name, secondname, lastname, doctype, docnumb
             </FormControl>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
+                format="DD/MM/YYYY"
                 value={dayjs(birthdateValue)}
                 onChange={(newValue) => handleBirthdateChange(newValue)}
                 sx={{
@@ -269,7 +274,9 @@ const UserForm = ({ onClose, isnew, name, secondname, lastname, doctype, docnumb
               sx={{
                 "& label": { color: "white" },
                 "& input": { color: "white" },
-                "& .MuiFormHelperText-root": { color: "grey" },
+                "& .MuiFormHelperText-root": {
+                  color: isValidLastname ? "grey" : "red"
+                }
               }}
             />
             <TextField
@@ -282,7 +289,9 @@ const UserForm = ({ onClose, isnew, name, secondname, lastname, doctype, docnumb
               sx={{
                 "& label": { color: "white" },
                 "& input": { color: "white" },
-                "& .MuiFormHelperText-root": {color: "grey"},
+                "& .MuiFormHelperText-root": {
+                  color: isValidDocnumber ? "grey" : "red"
+                }
               }}
             />
             <TextField
@@ -295,7 +304,9 @@ const UserForm = ({ onClose, isnew, name, secondname, lastname, doctype, docnumb
               sx={{
                 "& label": { color: "white" },
                 "& input": { color: "white" },
-                "& .MuiFormHelperText-root": { color: "grey" },
+                "& .MuiFormHelperText-root": {
+                  color: isValidEmail ? "grey" : "red"
+                }
               }}
             />
             <TextField
@@ -308,7 +319,9 @@ const UserForm = ({ onClose, isnew, name, secondname, lastname, doctype, docnumb
               sx={{
                 "& label": { color: "white" },
                 "& input": { color: "white" },
-                "& .MuiFormHelperText-root": { color: "grey" },
+                "& .MuiFormHelperText-root": {
+                  color: isValidPhone ? "grey" : "red"
+                }
               }}
             />
           </Stack>
