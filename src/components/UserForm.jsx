@@ -18,17 +18,32 @@ import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import Alert from '@mui/material/Alert';
+import Alert from "@mui/material/Alert";
 
 function getinitialdate(birthdate) {
-  const [day, month, year] = birthdate.split('/');
-  return `${year}-${month}-${day}`
+  const [day, month, year] = birthdate.split("/");
+  return `${year}-${month}-${day}`;
 }
 
-const UserForm = ({ onClose, isnew, name, secondname, lastname, doctype, docnumber, gender, email, birthdate, phone }) => {
-  const [birthdateValue, setBirthdateValue] = useState(birthdate ? getinitialdate(birthdate) : null);
+const UserForm = ({
+  onClose,
+  isnew,
+  name,
+  secondname,
+  lastname,
+  doctype,
+  docnumber,
+  gender,
+  email,
+  birthdate,
+  phone,
+  image,
+}) => {
+  const [birthdateValue, setBirthdateValue] = useState(
+    birthdate ? getinitialdate(birthdate) : null
+  );
   const [nameValue, setNameValue] = useState(name);
   const [secondnameValue, setsecondnameValue] = useState(secondname);
   const [isValidSecondname, setisValidSecondname] = useState(true);
@@ -44,6 +59,7 @@ const UserForm = ({ onClose, isnew, name, secondname, lastname, doctype, docnumb
   const [phoneValue, setPhoneValue] = useState(phone);
   const [isValidPhone, setisValidPhone] = useState(true);
   const [alert, setAlert] = useState(false);
+  const [imageValue, setImagen] = useState(image);
 
   //#region Validations
   const handleEmailChange = (e) => {
@@ -54,47 +70,76 @@ const UserForm = ({ onClose, isnew, name, secondname, lastname, doctype, docnumb
   const handleDocnumberChange = (e) => {
     const newDocnumber = e.target.value;
     setDocnumberValue(newDocnumber);
-    setIsValidDocnumber(/^\d+$/.test(newDocnumber) && newDocnumber.length <= 10);
+    setIsValidDocnumber(
+      /^\d+$/.test(newDocnumber) && newDocnumber.length <= 10
+    );
   };
   const handleNombreChange = (e) => {
     const newNombre = e.target.value;
     setNameValue(newNombre);
-    setisValidName(/^[^\d]+$/.test(newNombre) && newNombre.length <= 30 && newNombre.trim() !== "" && newNombre.trim() === newNombre);
-  }
+    setisValidName(
+      /^[^\d]+$/.test(newNombre) &&
+        newNombre.length <= 30 &&
+        newNombre.trim() !== "" &&
+        newNombre.trim() === newNombre
+    );
+  };
   const handleSegundoNombreChange = (e) => {
     const newSecond = e.target.value;
     setsecondnameValue(newSecond);
-    setisValidSecondname(/^[^\d]+$/.test(newSecond) && newSecond.length <= 30 && newSecond.trim() !== "" && newSecond.trim() === newSecond);
-  }
+    setisValidSecondname(
+      /^[^\d]+$/.test(newSecond) &&
+        newSecond.length <= 30 &&
+        newSecond.trim() !== "" &&
+        newSecond.trim() === newSecond
+    );
+  };
   const handleApellidoChange = (e) => {
     const newApellido = e.target.value;
     setLastnameValue(newApellido);
-    setisValidLastname(/^[^\d]+$/.test(newApellido) && newApellido.length <= 60 && newApellido.trim() !== "");
-  }
+    setisValidLastname(
+      /^[^\d]+$/.test(newApellido) &&
+        newApellido.length <= 60 &&
+        newApellido.trim() !== ""
+    );
+  };
   const handlePhoneChange = (e) => {
     const newPhone = e.target.value;
     setPhoneValue(newPhone);
-    setisValidPhone(/^\d+$/.test(newPhone) && newPhone.length === 10)
-  }
+    setisValidPhone(/^\d+$/.test(newPhone) && newPhone.length === 10);
+  };
   const handleBirthdateChange = (newValue) => {
-    const newBirthdate = `${newValue.$y}-${(newValue.$M)+1}-${newValue.$D}`
+    const newBirthdate = `${newValue.$y}-${newValue.$M + 1}-${newValue.$D}`;
     setBirthdateValue(newBirthdate);
-  }
+  };
   const handleButtonPress = () => {
     // eslint-disable-next-line
-    if(nameValue, secondnameValue , lastnameValue , doctypeValue , docnumberValue , genderValue , emailValue , birthdateValue , phoneValue === ""){
+    if (
+      (nameValue,
+      secondnameValue,
+      lastnameValue,
+      doctypeValue,
+      docnumberValue,
+      genderValue,
+      emailValue,
+      birthdateValue,
+      phoneValue === "")
+    ) {
       setAlert(true);
-    }else{
+    } else {
       setAlert(false);
-      if(isnew){
-        console.log("Crear")
+      if (isnew) {
+        console.log("Crear");
         onClose();
-      }else{
-        console.log("Actualizar")
+      } else {
+        console.log("Actualizar");
         onClose();
       }
     }
-  }
+  };
+  const manejarErrorImagen = () => {
+    setImagen("/images/avatar");
+  };
   //#endregion Validations
 
   return (
@@ -131,7 +176,8 @@ const UserForm = ({ onClose, isnew, name, secondname, lastname, doctype, docnumb
         ></Button>
         <Stack direction="row" sx={{ alignSelf: "center" }}>
           <Avatar
-            src="/images/avatar"
+            src={imageValue}
+            onError={manejarErrorImagen}
             sx={{
               marginLeft: "40px",
               boxShadow: "inset 0px 4px 4px rgba(0, 0, 0, 0.25)",
@@ -160,14 +206,18 @@ const UserForm = ({ onClose, isnew, name, secondname, lastname, doctype, docnumb
               error={isValidName === false}
               onChange={handleNombreChange}
               variant="filled"
-              helperText={isValidName ? "Ingresa tu nombre" : "No usar números y no mayor a 30 caracteres"}
+              helperText={
+                isValidName
+                  ? "Ingresa tu nombre"
+                  : "No usar números y no mayor a 30 caracteres"
+              }
               sx={{
-                outline:"",
+                outline: "",
                 "& label": { color: "white" },
                 "& input": { color: "white" },
                 "& .MuiFormHelperText-root": {
-                  color: isValidName ? "grey" : "red"
-                }
+                  color: isValidName ? "grey" : "red",
+                },
               }}
             />
             <TextField
@@ -176,14 +226,18 @@ const UserForm = ({ onClose, isnew, name, secondname, lastname, doctype, docnumb
               error={isValidSecondname === false}
               onChange={handleSegundoNombreChange}
               variant="filled"
-              helperText={isValidSecondname ? "Ingresa tu segundo nombre" : "No usar números y no mayor a 30 caracteres"}
+              helperText={
+                isValidSecondname
+                  ? "Ingresa tu segundo nombre"
+                  : "No usar números y no mayor a 30 caracteres"
+              }
               sx={{
-                outline:"",
+                outline: "",
                 "& label": { color: "white" },
                 "& input": { color: "white" },
                 "& .MuiFormHelperText-root": {
-                  color: isValidSecondname ? "grey" : "red"
-                }
+                  color: isValidSecondname ? "grey" : "red",
+                },
               }}
             />
             <FormControl>
@@ -192,15 +246,19 @@ const UserForm = ({ onClose, isnew, name, secondname, lastname, doctype, docnumb
               >
                 Tipo de documento
               </FormLabel>
-              <RadioGroup row value={doctypeValue} onChange={(e) => setDoctypeValue(e.target.value)}>
+              <RadioGroup
+                row
+                value={doctypeValue}
+                onChange={(e) => setDoctypeValue(e.target.value)}
+              >
                 <FormControlLabel
-                  value="cedula"
+                  value="Cédula"
                   control={<Radio sx={{ color: "white" }} />}
                   label="Cédula"
                   sx={{ "& .MuiTypography-root": { color: "white" } }}
                 />
                 <FormControlLabel
-                  value="ti"
+                  value="Tarjeta de identidad"
                   control={<Radio sx={{ color: "white" }} />}
                   label="Tarjeta de identidad"
                   sx={{ "& .MuiTypography-root": { color: "white" } }}
@@ -213,16 +271,20 @@ const UserForm = ({ onClose, isnew, name, secondname, lastname, doctype, docnumb
               >
                 Género
               </FormLabel>
-              <RadioGroup row value={genderValue} onChange={(e) => setGenderValue(e.target.value)}>
+              <RadioGroup
+                row
+                value={genderValue}
+                onChange={(e) => setGenderValue(e.target.value)}
+              >
                 <Stack direction="column">
                   <FormControlLabel
-                    value="female"
+                    value="Femenino"
                     control={<Radio sx={{ color: "white" }} />}
                     label="Femenino"
                     sx={{ "& .MuiTypography-root": { color: "white" } }}
                   />
                   <FormControlLabel
-                    value="male"
+                    value="Masculino"
                     control={<Radio sx={{ color: "white" }} />}
                     label="Masculino"
                     sx={{ "& .MuiTypography-root": { color: "white" } }}
@@ -230,13 +292,13 @@ const UserForm = ({ onClose, isnew, name, secondname, lastname, doctype, docnumb
                 </Stack>
                 <Stack direction="column">
                   <FormControlLabel
-                    value="nobin"
+                    value="No binario"
                     control={<Radio sx={{ color: "white" }} />}
                     label="No binario"
                     sx={{ "& .MuiTypography-root": { color: "white" } }}
                   />
                   <FormControlLabel
-                    value="nodef"
+                    value="Prefiero no decir"
                     control={<Radio sx={{ color: "white" }} />}
                     label="No especificar"
                     sx={{ "& .MuiTypography-root": { color: "white" } }}
@@ -250,14 +312,14 @@ const UserForm = ({ onClose, isnew, name, secondname, lastname, doctype, docnumb
                 value={dayjs(birthdateValue)}
                 onChange={(newValue) => handleBirthdateChange(newValue)}
                 sx={{
-                  '& .MuiInputBase-input': {
-                    color: 'white',
+                  "& .MuiInputBase-input": {
+                    color: "white",
                   },
                   "& .MuiInputLabel-root": {
-                    color: "white"
+                    color: "white",
                   },
-                  '& .MuiSvgIcon-root': {
-                    color: 'white'
+                  "& .MuiSvgIcon-root": {
+                    color: "white",
                   },
                 }}
               />
@@ -270,13 +332,17 @@ const UserForm = ({ onClose, isnew, name, secondname, lastname, doctype, docnumb
               error={isValidLastname === false}
               onChange={handleApellidoChange}
               variant="filled"
-              helperText={isValidLastname ? "Ingresa tu apellido" : "No usar número y no mayor a 60 caracteres"}
+              helperText={
+                isValidLastname
+                  ? "Ingresa tu apellido"
+                  : "No usar número y no mayor a 60 caracteres"
+              }
               sx={{
                 "& label": { color: "white" },
                 "& input": { color: "white" },
                 "& .MuiFormHelperText-root": {
-                  color: isValidLastname ? "grey" : "red"
-                }
+                  color: isValidLastname ? "grey" : "red",
+                },
               }}
             />
             <TextField
@@ -285,50 +351,66 @@ const UserForm = ({ onClose, isnew, name, secondname, lastname, doctype, docnumb
               error={isValidDocnumber === false}
               onChange={handleDocnumberChange}
               variant="filled"
-              helperText={isValidDocnumber ? "Ingresa tu número de documento" : "Solo números y no mayor a 10 caracteres"}
+              helperText={
+                isValidDocnumber
+                  ? "Ingresa tu número de documento"
+                  : "Solo números y no mayor a 10 caracteres"
+              }
               sx={{
                 "& label": { color: "white" },
                 "& input": { color: "white" },
                 "& .MuiFormHelperText-root": {
-                  color: isValidDocnumber ? "grey" : "red"
-                }
+                  color: isValidDocnumber ? "grey" : "red",
+                },
               }}
             />
             <TextField
               label="Email"
               value={emailValue}
-              error = {isValidEmail === false}
+              error={isValidEmail === false}
               onChange={handleEmailChange}
               variant="filled"
-              helperText={isValidEmail ? "Ingresa tu email" : "Formato de email invalido"}
+              helperText={
+                isValidEmail ? "Ingresa tu email" : "Formato de email invalido"
+              }
               sx={{
                 "& label": { color: "white" },
                 "& input": { color: "white" },
                 "& .MuiFormHelperText-root": {
-                  color: isValidEmail ? "grey" : "red"
-                }
+                  color: isValidEmail ? "grey" : "red",
+                },
               }}
             />
             <TextField
               label="Célular"
               value={phoneValue}
-              error = {isValidPhone === false}
+              error={isValidPhone === false}
               onChange={handlePhoneChange}
               variant="filled"
-              helperText={isValidPhone ? "Ingresa tu número de celular" : "Solo números y debe ser de 10 caracteres"}
+              helperText={
+                isValidPhone
+                  ? "Ingresa tu número de celular"
+                  : "Solo números y debe ser de 10 caracteres"
+              }
               sx={{
                 "& label": { color: "white" },
                 "& input": { color: "white" },
                 "& .MuiFormHelperText-root": {
-                  color: isValidPhone ? "grey" : "red"
-                }
+                  color: isValidPhone ? "grey" : "red",
+                },
               }}
             />
           </Stack>
         </Stack>
         <Button
           variant="outlined"
-          disabled={!isValidEmail || !isValidDocnumber || !isValidName || !isValidLastname || !isValidPhone}
+          disabled={
+            !isValidEmail ||
+            !isValidDocnumber ||
+            !isValidName ||
+            !isValidLastname ||
+            !isValidPhone
+          }
           startIcon={
             <CheckIcon sx={{ width: "30px", height: "30px", color: "black" }} />
           }
@@ -352,19 +434,23 @@ const UserForm = ({ onClose, isnew, name, secondname, lastname, doctype, docnumb
             "&:hover .MuiSvgIcon-root": {
               color: "white",
             },
-            '&:disabled': {
-              backgroundColor: '#BD4243'
+            "&:disabled": {
+              backgroundColor: "#BD4243",
             },
           }}
           onClick={handleButtonPress}
         >
-          {isnew ? (<Typography sx={{ fontWeight: "bold", color: "black" }}>
-            Crear
-          </Typography>) : (<Typography sx={{ fontWeight: "bold", color: "black" }}>
-            Actualizar
-          </Typography>)}
+          {isnew ? (
+            <Typography sx={{ fontWeight: "bold", color: "black" }}>
+              Crear
+            </Typography>
+          ) : (
+            <Typography sx={{ fontWeight: "bold", color: "black" }}>
+              Actualizar
+            </Typography>
+          )}
         </Button>
-        {alert ? <Alert severity='error'>Llena todos los campos</Alert> : <></> }
+        {alert ? <Alert severity="error">Llena todos los campos</Alert> : <></>}
       </Stack>
     </Box>
   );

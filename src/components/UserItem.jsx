@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import { Typography, IconButton, ButtonGroup, Box } from "@mui/material";
 import Avatar from "@mui/joy/Avatar";
 import Card from "@mui/joy/Card";
@@ -11,8 +12,24 @@ import Modal from "@mui/material/Modal";
 import UserForm from "./UserForm";
 
 const UserItem = (props) => {
-  const { name, secondname, lastname, doctype, docnumber, gender, email, birthdate, phone } = props.user;
+  const {
+    first_name,
+    middle_name,
+    last_name,
+    document_type,
+    document_id,
+    gender,
+    email,
+    birth_date,
+    phone,
+    photo_url,
+  } = props.user;
   const [open, setOpen] = React.useState(false);
+  const [imagen, setImagen] = useState(photo_url);
+
+  const manejarErrorImagen = () => {
+    setImagen("/images/avatar");
+  };
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -27,7 +44,8 @@ const UserItem = (props) => {
     >
       <CardContent sx={{ alignItems: "center", textAlign: "center" }}>
         <Avatar
-          src="/images/avatar"
+          src={imagen}
+          onError={manejarErrorImagen}
           sx={{
             boxShadow: "inset 0px 4px 4px rgba(0, 0, 0, 0.25)",
             "--Avatar-size": "8rem",
@@ -36,7 +54,7 @@ const UserItem = (props) => {
         <Typography
           sx={{ paddingTop: "10px", fontWeight: "bold", color: "black" }}
         >
-          {name+" "+lastname}
+          {first_name + " " + last_name}
         </Typography>
       </CardContent>
       <CardOverflow sx={{ bgcolor: "background.level1" }}>
@@ -64,7 +82,20 @@ const UserItem = (props) => {
                   boxShadow: 24,
                 }}
               >
-                <UserForm onClose={handleClose} isnew={false} name={name} secondname={secondname} lastname={lastname} doctype={doctype} docnumber={docnumber} gender={gender} email={email} birthdate={birthdate} phone={phone}/>
+                <UserForm
+                  onClose={handleClose}
+                  isnew={false}
+                  name={first_name}
+                  secondname={middle_name}
+                  lastname={last_name}
+                  doctype={document_type}
+                  docnumber={document_id}
+                  gender={gender}
+                  email={email}
+                  birthdate={birth_date}
+                  phone={phone}
+                  image={photo_url}
+                />
               </Box>
             </Modal>
             <IconButton>
