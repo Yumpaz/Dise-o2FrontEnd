@@ -124,7 +124,8 @@ const UserForm = ({
       setAlert(false);
       if (isnew) {
         console.log("Crear");
-        onClose();
+        await createUser();
+        window.location.reload();
       } else {
         console.log("Actualizar");
         await updateUser();
@@ -179,6 +180,56 @@ const UserForm = ({
       }
     }
   };
+
+  const createUser=async()=>{
+    const [year, month, day] = birthdateValue.split("-");
+    const userData = {
+      document_type:doctypeValue,
+      document_id:docnumberValue,
+      first_name: nameValue,
+      middle_name: secondnameValue,
+      last_name: lastnameValue,
+      gender: genderValue,
+      email: emailValue,
+      birth_date: `${day}-${month}-${year}`,
+      phone: phoneValue
+    };
+    try {
+      const response = await fetch(`http://172.203.155.199:8000/people`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error al actualizar el usuario');
+      }
+    } catch (error) {
+      console.error('Hubo un error:', error);
+    }
+
+    if(fileImageValue){
+      const formData = new FormData();
+      formData.append("file", fileImageValue);
+      try {
+        const response = await fetch(`http://172.203.155.199:8000/people/${docnumberValue}/image`, { 
+          method: 'PATCH', 
+          body: formData,
+        });
+    
+        if (!response.ok) {
+          throw new Error(`Error HTTP: ${response.status}`);
+        }
+    
+        const data = await response.json();
+        console.log('Archivo subido con éxito:', data);
+      } catch (error) {
+        console.error('Error al subir el archivo:', error);
+      }
+    }
+  }
   
   const manejarErrorImagen = () => {
     setImagen("/images/avatar");
