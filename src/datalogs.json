@@ -1,0 +1,44 @@
+[
+  {
+      "log_id": "1",
+      "document_type": "cedula",
+      "document_id": "1005575799",
+      "operation": "create",
+      "created_at": "2000-04-22T00:00:00.000"
+  },
+  {
+      "log_id": "2",
+      "document_type": "ti",
+      "document_id": "101019238",
+      "operation": "update",
+      "created_at": "2001-09-07T00:00:00.000"
+  },
+  {
+      "log_id": "3",
+      "document_type": "cedula",
+      "document_id": "1005575799",
+      "operation": "create",
+      "created_at": "2000-04-22T00:00:00.000"
+  },
+  {
+      "log_id": "4",
+      "document_type": "ti",
+      "document_id": "101019238",
+      "operation": "update",
+      "created_at": "2001-09-07T00:00:00.000"
+  },
+  {
+      "log_id": "5",
+      "document_type": "ti",
+      "document_id": "101019238",
+      "operation": "delete",
+      "created_at": "2003-09-07T00:00:00.000"
+  },
+  {
+      "log_id": "6",
+      "document_type": "cedula",
+      "document_id": "1005575799",
+      "operation": "update",
+      "created_at": "2000-04-10T00:00:00.000"
+  }
+]

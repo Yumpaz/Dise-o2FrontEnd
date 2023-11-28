@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -25,65 +25,94 @@ import dayjs from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 const LogList = () => {
-  const logs = dataList;
+  //const logs = dataList;
+  const [logs, setDatos] = useState(null);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState(null);
   const [DocType, setDocType] = useState("");
   const [searchDocNumber, setsearchDocNumber] = useState("");
   const [isValidDocNumber, setIsValidDocNumber] = useState(true);
   const [Datei, setDatei] = useState("");
   const [Datef, setDatef] = useState("");
-  const filteredRows = logs.filter((log) => {
-    let Dateidespues = true;
-    let Datefantes = true;
-    const [day, month, year] = log.date.split("/");
-    if (Datei !== "") {
-      const Dateicheck = dayjs(Datei);
-      const [monthi, dayi, yeari] = [
-        Dateicheck.$M + 1,
-        Dateicheck.$D,
-        Dateicheck.$y,
+
+  useEffect(() => {
+    fetch("http://172.203.155.199:8000/log")
+      .then((respuesta) => {
+        if (!respuesta.ok) {
+          throw new Error("Error en la respuesta de la red");
+        }
+        return respuesta.json();
+      })
+      .then((data) => {
+        setDatos(data);
+        setCargando(false);
+      })
+      .catch((error) => {
+        setError(error.message);
+        setCargando(false);
+      });
+  }, []);
+
+  const filteredRows =
+    logs?.filter((log) => {
+      let Dateidespues = true;
+      let Datefantes = true;
+
+      const parsedFecha = dayjs(log.created_at);
+      const [month, day, year] = [
+        parsedFecha.$M + 1,
+        parsedFecha.$D,
+        parsedFecha.$y,
       ];
-      if (yeari > year) {
-        Dateidespues = false;
-      } else {
-        if (monthi > month && yeari === year) {
+      if (Datei !== "") {
+        const Dateicheck = dayjs(Datei);
+        const [monthi, dayi, yeari] = [
+          Dateicheck.$M + 1,
+          Dateicheck.$D,
+          Dateicheck.$y,
+        ];
+        if (yeari > year) {
           Dateidespues = false;
         } else {
-          if (dayi > day && monthi === month && yeari === year) {
+          if (monthi > month && yeari === year) {
             Dateidespues = false;
           } else {
-            Dateidespues = true;
+            if (dayi > day && monthi === month && yeari === year) {
+              Dateidespues = false;
+            } else {
+              Dateidespues = true;
+            }
           }
         }
       }
-    }
-    if (Datef !== "") {
-      const Datefcheck = dayjs(Datef);
-      const [monthf, dayf, yearf] = [
-        Datefcheck.$M + 1,
-        Datefcheck.$D,
-        Datefcheck.$y,
-      ];
-      if (yearf < year) {
-        Datefantes = false;
-      } else {
-        if (monthf < month && yearf === year) {
+      if (Datef !== "") {
+        const Datefcheck = dayjs(Datef);
+        const [monthf, dayf, yearf] = [
+          Datefcheck.$M + 1,
+          Datefcheck.$D,
+          Datefcheck.$y,
+        ];
+        if (yearf < year) {
           Datefantes = false;
         } else {
-          if (dayf < day && monthf === month && yearf === year) {
+          if (monthf < month && yearf === year) {
             Datefantes = false;
           } else {
-            Datefantes = true;
+            if (dayf < day && monthf === month && yearf === year) {
+              Datefantes = false;
+            } else {
+              Datefantes = true;
+            }
           }
         }
       }
-    }
-    return (
-      log.docnumber.includes(searchDocNumber) &&
-      log.doctype.includes(DocType) &&
-      Dateidespues === true &&
-      Datefantes === true
-    );
-  });
+      return (
+        log.document_id.includes(searchDocNumber) &&
+        log.document_type.includes(DocType) &&
+        Dateidespues === true &&
+        Datefantes === true
+      );
+    }) ?? [];
 
   const handleDelete = () => {};
 
@@ -110,10 +139,10 @@ const LogList = () => {
   };
 
   const handleDocType = (doctype) => {
-    if (doctype === "cedula") {
+    if (doctype === "Cédula") {
       return "Cédula";
     } else {
-      if (doctype === "ti") {
+      if (doctype === "Tarjeta de identidad") {
         return "Tarjeta de identidad";
       }
     }
@@ -130,8 +159,8 @@ const LogList = () => {
             label="Tipo de Documento"
             onChange={handleDocTypeChange}
           >
-            <MenuItem value={"ti"}>Tarjeta de Identidad</MenuItem>
-            <MenuItem value={"cedula"}>Cédula</MenuItem>
+            <MenuItem value={"Tarjeta de identidad"}>Tarjeta de Identidad</MenuItem>
+            <MenuItem value={"Cédula"}>Cédula</MenuItem>
             <MenuItem value={""}>Todo</MenuItem>
           </Select>
         </FormControl>
@@ -178,15 +207,15 @@ const LogList = () => {
           <TableBody>
             {filteredRows.map((row) => (
               <TableRow
-                key={row.id}
+                key={row.log_id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell align="center">
-                  {handleDocType(row.doctype)}
+                  {handleDocType(row.document_type)}
                 </TableCell>
-                <TableCell align="center">{row.docnumber}</TableCell>
-                <TableCell align="center">{row.action}</TableCell>
-                <TableCell align="center">{row.date}</TableCell>
+                <TableCell align="center">{row.document_id}</TableCell>
+                <TableCell align="center">{row.operation}</TableCell>
+                <TableCell align="center">{dayjs(row.created_at).format('DD-MM-YYYY')}</TableCell>
                 <TableCell align="center">
                   {
                     <IconButton onClick={handleDelete}>
