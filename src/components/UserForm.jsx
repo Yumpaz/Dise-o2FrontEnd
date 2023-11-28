@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   Box,
   Button,
-  IconButton,
   Stack,
   TextField,
   Radio,
@@ -14,18 +13,13 @@ import {
 } from "@mui/material";
 import Avatar from "@mui/joy/Avatar";
 import CloseIcon from "@mui/icons-material/Close";
-import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Alert from "@mui/material/Alert";
-
-function getinitialdate(birthdate) {
-  const [day, month, year] = birthdate.split("/");
-  return `${year}-${month}-${day}`;
-}
+import EditBtn from "./EditBTN";
 
 const UserForm = ({
   onClose,
@@ -42,7 +36,7 @@ const UserForm = ({
   image,
 }) => {
   const [birthdateValue, setBirthdateValue] = useState(
-    birthdate ? getinitialdate(birthdate) : null
+    birthdate ? birthdate : null
   );
   const [nameValue, setNameValue] = useState(name);
   const [secondnameValue, setsecondnameValue] = useState(secondname);
@@ -60,6 +54,7 @@ const UserForm = ({
   const [isValidPhone, setisValidPhone] = useState(true);
   const [alert, setAlert] = useState(false);
   const [imageValue, setImagen] = useState(image);
+  const [fileImageValue, setFileImagen] = useState(null);
 
   //#region Validations
   const handleEmailChange = (e) => {
@@ -109,11 +104,10 @@ const UserForm = ({
     setisValidPhone(/^\d+$/.test(newPhone) && newPhone.length === 10);
   };
   const handleBirthdateChange = (newValue) => {
-    const newBirthdate = `${newValue.$y}-${newValue.$M + 1}-${newValue.$D}`;
+    const newBirthdate = newValue.format("YYYY-MM-DD");
     setBirthdateValue(newBirthdate);
   };
-  const handleButtonPress = () => {
-    // eslint-disable-next-line
+  const handleButtonPress = async() => {
     if (
       (nameValue,
       secondnameValue,
@@ -133,14 +127,69 @@ const UserForm = ({
         onClose();
       } else {
         console.log("Actualizar");
-        onClose();
+        await updateUser();
+        window.location.reload();
       }
     }
   };
+  const updateUser = async () => {
+    const [year, month, day] = birthdateValue.split("-");
+    const userData = {
+      first_name: nameValue,
+      middle_name: secondnameValue,
+      last_name: lastnameValue,
+      gender: genderValue,
+      email: emailValue,
+      birth_date: `${day}-${month}-${year}`,
+      phone: phoneValue
+    };
+    try {
+      const response = await fetch(`http://172.203.155.199:8000/people/${docnumber}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error al actualizar el usuario');
+      }
+    } catch (error) {
+      console.error('Hubo un error:', error);
+    }
+
+    if(fileImageValue){
+      const formData = new FormData();
+      formData.append("file", fileImageValue);
+      try {
+        const response = await fetch(`http://172.203.155.199:8000/people/${docnumber}/image`, { 
+          method: 'PATCH', 
+          body: formData,
+        });
+    
+        if (!response.ok) {
+          throw new Error(`Error HTTP: ${response.status}`);
+        }
+    
+        const data = await response.json();
+        console.log('Archivo subido con éxito:', data);
+      } catch (error) {
+        console.error('Error al subir el archivo:', error);
+      }
+    }
+  };
+  
   const manejarErrorImagen = () => {
     setImagen("/images/avatar");
   };
   //#endregion Validations
+
+  const updateImage=(file)=>{
+    setFileImagen(file)
+    const newImageSrc = URL.createObjectURL(file);
+    setImagen(newImageSrc);
+  }
 
   return (
     <Box
@@ -184,16 +233,7 @@ const UserForm = ({
               "--Avatar-size": "8rem",
             }}
           />
-          <IconButton>
-            <EditIcon
-              sx={{
-                width: "25px",
-                height: "25px",
-                color: "white",
-                marginTop: "80px",
-              }}
-            />
-          </IconButton>
+          <EditBtn setImage={updateImage}></EditBtn>
         </Stack>
         <Stack
           direction="row"
@@ -308,7 +348,7 @@ const UserForm = ({
             </FormControl>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                format="DD/MM/YYYY"
+                format="YYYY-MM-DD"
                 value={dayjs(birthdateValue)}
                 onChange={(newValue) => handleBirthdateChange(newValue)}
                 sx={{
