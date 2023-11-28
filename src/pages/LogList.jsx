@@ -30,21 +30,42 @@ const LogList = () => {
   const [isValidDocNumber, setIsValidDocNumber] = useState(true);
   const [Datei, setDatei] = useState("");
   const [Datef, setDatef] = useState("");
+  const deleteLogs = async (logId) => {
+    try {
+      const response = await fetch(
+        `http://172.203.155.199:8000/log/${logId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error al eliminar el usuario");
+      }
+
+      const data = await response.json();
+      console.log("Log eliminado", data);
+    } catch (error) {
+      console.error("Hubo un error al eliminar el usuario:", error);
+    }
+    getLogs();
+  };
+
+  const getLogs = async () => {
+    try {
+      const respuesta = await fetch("http://172.203.155.199:8000/log");
+      if (!respuesta.ok) {
+        throw new Error("Error en la respuesta de la red");
+      }
+      const data = await respuesta.json();
+      setDatos(data);
+    } catch (error) {
+      console.error("error:", error);
+    }
+  };
 
   useEffect(() => {
-    fetch("http://172.203.155.199:8000/log")
-      .then((respuesta) => {
-        if (!respuesta.ok) {
-          throw new Error("Error en la respuesta de la red");
-        }
-        return respuesta.json();
-      })
-      .then((data) => {
-        setDatos(data);
-      })
-      .catch((error) => {
-        console.error(error.message);
-      });
+    getLogs();
   }, []);
 
   const filteredRows =
@@ -107,8 +128,6 @@ const LogList = () => {
         Datefantes === true
       );
     }) ?? [];
-
-  const handleDelete = () => {};
 
   const handleDocNumberChange = (e) => {
     const newDocnumber = e.target.value;
@@ -216,7 +235,7 @@ const LogList = () => {
                 </TableCell>
                 <TableCell align="center">
                   {
-                    <IconButton onClick={handleDelete}>
+                    <IconButton onClick={()=>deleteLogs(row.log_id)}>
                       <DeleteForeverIcon
                         sx={{ width: "30px", height: "30px", color: "red" }}
                       />
