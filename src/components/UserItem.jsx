@@ -24,6 +24,7 @@ const UserItem = (props) => {
     phone,
     photo_url,
   } = props.user;
+  const handleDeleteUser = props.delete;
   const [open, setOpen] = React.useState(false);
   const [imagen, setImagen] = useState(photo_url);
 
@@ -94,11 +95,11 @@ const UserItem = (props) => {
                   email={email}
                   birthdate={birth_date}
                   phone={phone}
-                  image={photo_url}
+                  image={imagen}
                 />
               </Box>
             </Modal>
-            <IconButton>
+            <IconButton onClick={()=>handleDeleteUser(document_id)}>
               <DeleteForeverIcon
                 sx={{ width: "40px", height: "40px", color: "red" }}
               />

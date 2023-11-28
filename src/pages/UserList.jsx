@@ -11,21 +11,42 @@ const UserList = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const deleteUser = async (userId) => {
+    try {
+      const response = await fetch(
+        `http://172.203.155.199:8000/people/${userId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error al eliminar el usuario");
+      }
+
+      const data = await response.json();
+      console.log("Usuario eliminado", data);
+    } catch (error) {
+      console.error("Hubo un error al eliminar el usuario:", error);
+    }
+    getUsers()
+  };
+
+  const getUsers = async () => {
+    try {
+      const respuesta = await fetch("http://172.203.155.199:8000/people");
+      if (!respuesta.ok) {
+        throw new Error("Error en la respuesta de la red");
+      }
+      const data = await respuesta.json();
+      setDatos(data);
+    } catch (error) {
+      console.error("error:", error);
+    }
+  };
 
   useEffect(() => {
-    fetch("http://172.203.155.199:8000/people")
-      .then((respuesta) => {
-        if (!respuesta.ok) {
-          throw new Error("Error en la respuesta de la red");
-        }
-        return respuesta.json();
-      })
-      .then((data) => {
-        setDatos(data);
-      })
-      .catch((error) => {
-        console.error("error:", error);
-      });
+    getUsers();
   }, []);
 
   return (
@@ -91,7 +112,9 @@ const UserList = () => {
       </Modal>
       <Grid container rowSpacing={4} columnSpacing={{ xs: 2, sm: 4, md: 6 }}>
         {users.map((item, i) => (
-          <Grid key={i}>{<UserItem key={i} user={item} />}</Grid>
+          <Grid key={i}>
+            {<UserItem key={i} user={item} delete={deleteUser} />}
+          </Grid>
         ))}
       </Grid>
     </Container>
