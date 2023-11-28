@@ -18,17 +18,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import dataList from "../datalogs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 const LogList = () => {
-  //const logs = dataList;
   const [logs, setDatos] = useState(null);
-  const [cargando, setCargando] = useState(true);
-  const [error, setError] = useState(null);
   const [DocType, setDocType] = useState("");
   const [searchDocNumber, setsearchDocNumber] = useState("");
   const [isValidDocNumber, setIsValidDocNumber] = useState(true);
@@ -45,11 +41,9 @@ const LogList = () => {
       })
       .then((data) => {
         setDatos(data);
-        setCargando(false);
       })
       .catch((error) => {
-        setError(error.message);
-        setCargando(false);
+        console.error(error.message);
       });
   }, []);
 
@@ -159,7 +153,9 @@ const LogList = () => {
             label="Tipo de Documento"
             onChange={handleDocTypeChange}
           >
-            <MenuItem value={"Tarjeta de identidad"}>Tarjeta de Identidad</MenuItem>
+            <MenuItem value={"Tarjeta de identidad"}>
+              Tarjeta de Identidad
+            </MenuItem>
             <MenuItem value={"Cédula"}>Cédula</MenuItem>
             <MenuItem value={""}>Todo</MenuItem>
           </Select>
@@ -215,7 +211,9 @@ const LogList = () => {
                 </TableCell>
                 <TableCell align="center">{row.document_id}</TableCell>
                 <TableCell align="center">{row.operation}</TableCell>
-                <TableCell align="center">{dayjs(row.created_at).format('DD-MM-YYYY')}</TableCell>
+                <TableCell align="center">
+                  {dayjs(row.created_at).format("DD-MM-YYYY")}
+                </TableCell>
                 <TableCell align="center">
                   {
                     <IconButton onClick={handleDelete}>

@@ -1,17 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Grid from "@mui/joy/Grid";
 import UserItem from "../components/UserItem";
-import dataList from "../data";
 import { Box, Button, Container, Typography } from "@mui/material";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Modal from "@mui/material/Modal";
 import UserForm from "../components/UserForm";
 
 const UserList = () => {
-  const users = dataList;
+  const [users, setDatos] = useState([]);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    fetch("http://172.203.155.199:8000/people")
+      .then((respuesta) => {
+        if (!respuesta.ok) {
+          throw new Error("Error en la respuesta de la red");
+        }
+        return respuesta.json();
+      })
+      .then((data) => {
+        setDatos(data);
+      })
+      .catch((error) => {
+        console.error("error:", error);
+      });
+  }, []);
 
   return (
     <Container sx={{ position: "relative", paddingTop: "80px" }}>
@@ -59,14 +74,24 @@ const UserList = () => {
             boxShadow: 24,
           }}
         >
-          <UserForm onClose={handleClose} isnew={true} name={""} secondname={""} lastname={""} doctype={""} docnumber={""} gender={""} email={""} birthdate={""} phone={""}/>
+          <UserForm
+            onClose={handleClose}
+            isnew={true}
+            name={""}
+            secondname={""}
+            lastname={""}
+            doctype={""}
+            docnumber={""}
+            gender={""}
+            email={""}
+            birthdate={""}
+            phone={""}
+          />
         </Box>
       </Modal>
       <Grid container rowSpacing={4} columnSpacing={{ xs: 2, sm: 4, md: 6 }}>
         {users.map((item, i) => (
-          <Grid item key={i}>
-            {<UserItem key={i} user={item} />}
-          </Grid>
+          <Grid key={i}>{<UserItem key={i} user={item} />}</Grid>
         ))}
       </Grid>
     </Container>
