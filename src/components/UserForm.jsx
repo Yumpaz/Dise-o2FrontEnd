@@ -133,6 +133,7 @@ const UserForm = ({
       }
     }
   };
+
   const updateUser = async () => {
     const [year, month, day] = birthdateValue.split("-");
     const userData = {
@@ -335,7 +336,7 @@ const UserForm = ({
               <FormLabel
                 sx={{ color: "white", "&.Mui-focused": { color: "white" } }}
               >
-                Tipo de documento
+                <Typography variant="subtitle2" sx={{color: "white"}}>Tipo de documento</Typography>
               </FormLabel>
               <RadioGroup
                 row
@@ -344,15 +345,17 @@ const UserForm = ({
               >
                 <FormControlLabel
                   value="Cédula"
-                  control={<Radio sx={{ color: "white" }} />}
+                  control={<Radio sx={{ color: "white", '&.Mui-disabled': { color: "gray"} }} />}
                   label="Cédula"
-                  sx={{ "& .MuiTypography-root": { color: "white" } }}
+                  sx={{ "& .MuiTypography-root": { color: "white" }, "& .MuiTypography-root.Mui-disabled": { color: "gray" }}}
+                  disabled = {!isnew}
                 />
                 <FormControlLabel
                   value="Tarjeta de identidad"
-                  control={<Radio sx={{ color: "white" }} />}
+                  control={<Radio sx={{ color: "white", '&.Mui-disabled': { color: "gray"} }} />}
+                  disabled = {!isnew}
                   label="Tarjeta de identidad"
-                  sx={{ "& .MuiTypography-root": { color: "white" } }}
+                  sx={{ "& .MuiTypography-root": { color: "white" }, "& .MuiTypography-root.Mui-disabled": { color: "gray" }}}
                 />
               </RadioGroup>
             </FormControl>
@@ -360,7 +363,7 @@ const UserForm = ({
               <FormLabel
                 sx={{ color: "white", "&.Mui-focused": { color: "white" } }}
               >
-                Género
+                <Typography variant="subtitle2" sx={{color: "white"}}>Género</Typography>
               </FormLabel>
               <RadioGroup
                 row
@@ -397,6 +400,7 @@ const UserForm = ({
                 </Stack>
               </RadioGroup>
             </FormControl>
+            <Typography variant="subtitle2" sx={{color: "white"}}>Fecha de Nacimiento</Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 format="YYYY-MM-DD"
@@ -416,7 +420,7 @@ const UserForm = ({
               />
             </LocalizationProvider>
           </Stack>
-          <Stack direction="column" spacing={4}>
+          <Stack direction="column" spacing={5.5}>
             <TextField
               label="Apellidos"
               value={lastnameValue}
@@ -439,6 +443,7 @@ const UserForm = ({
             <TextField
               label="Número de documento"
               value={docnumberValue}
+              disabled={!isnew}
               error={isValidDocnumber === false}
               onChange={handleDocnumberChange}
               variant="filled"
@@ -453,6 +458,10 @@ const UserForm = ({
                 "& .MuiFormHelperText-root": {
                   color: isValidDocnumber ? "grey" : "red",
                 },
+                "& .MuiInputBase-input.Mui-disabled": {
+                  WebkitTextFillColor: "gray",
+                },
+                "& label.Mui-disabled": { color: "gray" }
               }}
             />
             <TextField
