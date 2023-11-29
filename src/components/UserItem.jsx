@@ -31,7 +31,11 @@ const UserItem = (props) => {
   const manejarErrorImagen = () => {
     setImagen("/images/avatar");
   };
-  const handleOpen = () => setOpen(true);
+  const handleOpen = async () => {
+    // dummy option to log the user data
+    await fetch(`http://172.203.155.199:8000/people/${document_id}`);
+    setOpen(true);
+  };
   const handleClose = () => setOpen(false);
 
   return (
