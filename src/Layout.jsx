@@ -25,7 +25,7 @@ const Layout = (props) => {
   }
 
   return (
-    <Box minHeight= '100vh' sx={{ background: "#FBECD5" }}>
+    <Box sx={{ background: "#FBECD5", minWidth: "100vh", minHeight: "100vh" }}>
       <Header onSidebarToggle={openSidebar} texto={HeaderText} />
       <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} onUser={onUserList} onLog={onLogList}/>
       <Container sx={{ marginTop: "70px"}} >{props.children}</Container>

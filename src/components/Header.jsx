@@ -11,7 +11,7 @@ const Header = ({ onSidebarToggle, texto }) => {
           justifyContent: "space-between",
           background: "#001233",
           minHeight: "100vh",
-          minWidth: "100vh"
+          minWidth: "100%"
         }}
       >
         <Button
