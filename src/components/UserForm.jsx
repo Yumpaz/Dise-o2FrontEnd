@@ -20,6 +20,7 @@ import dayjs from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Alert from "@mui/material/Alert";
 import EditBtn from "./EditBTN";
+import swal from "sweetalert";
 
 const UserForm = ({
   onClose,
@@ -107,7 +108,7 @@ const UserForm = ({
     const newBirthdate = newValue.format("YYYY-MM-DD");
     setBirthdateValue(newBirthdate);
   };
-  const handleButtonPress = async() => {
+  const handleButtonPress = async () => {
     if (
       (nameValue,
       secondnameValue,
@@ -125,7 +126,6 @@ const UserForm = ({
       if (isnew) {
         console.log("Crear");
         await createUser();
-        window.location.reload();
       } else {
         console.log("Actualizar");
         await updateUser();
@@ -143,105 +143,132 @@ const UserForm = ({
       gender: genderValue,
       email: emailValue,
       birth_date: `${day}-${month}-${year}`,
-      phone: phoneValue
+      phone: phoneValue,
     };
     try {
-      const response = await fetch(`http://172.203.155.199:8000/people/${docnumber}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userData)
-      });
-  
+      const response = await fetch(
+        `http://172.203.155.199:8000/people/${docnumber}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userData),
+        }
+      );
+
       if (!response.ok) {
-        throw new Error('Error al actualizar el usuario');
+        throw new Error("Error al actualizar el usuario");
       }
     } catch (error) {
-      console.error('Hubo un error:', error);
+      console.error("Hubo un error:", error);
     }
 
-    if(fileImageValue){
+    if (fileImageValue) {
       const formData = new FormData();
       formData.append("file", fileImageValue);
       try {
-        const response = await fetch(`http://172.203.155.199:8000/people/${docnumber}/image`, { 
-          method: 'PATCH', 
-          body: formData,
-        });
-    
+        const response = await fetch(
+          `http://172.203.155.199:8000/people/${docnumber}/image`,
+          {
+            method: "PATCH",
+            body: formData,
+          }
+        );
+
         if (!response.ok) {
           throw new Error(`Error HTTP: ${response.status}`);
         }
-    
+
         const data = await response.json();
-        console.log('Archivo subido con éxito:', data);
+        console.log("Archivo subido con éxito:", data);
       } catch (error) {
-        console.error('Error al subir el archivo:', error);
+        console.error("Error al subir el archivo:", error);
       }
     }
   };
 
-  const createUser=async()=>{
+  const createUser = async () => {
     const [year, month, day] = birthdateValue.split("-");
     const userData = {
-      document_type:doctypeValue,
-      document_id:docnumberValue,
+      document_type: doctypeValue,
+      document_id: docnumberValue,
       first_name: nameValue,
       middle_name: secondnameValue,
       last_name: lastnameValue,
       gender: genderValue,
       email: emailValue,
       birth_date: `${day}-${month}-${year}`,
-      phone: phoneValue
+      phone: phoneValue,
     };
     try {
       const response = await fetch(`http://172.203.155.199:8000/people`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(userData)
+        body: JSON.stringify(userData),
       });
-  
+
+      console.log("hola");
+
       if (!response.ok) {
-        throw new Error('Error al actualizar el usuario');
+        if (response.status === 400) {
+          const data = await response.json();
+          swal({
+            title: "Usuario existente",
+            text: data.detail,
+            icon: "error",
+            button: { text: "Aceptar", className: "custom-button" },
+          });
+          var customButton = document.querySelector(".custom-button");
+          if (customButton) {
+            customButton.style.backgroundColor = "#FF595A";
+            customButton.onmouseover = function () {
+              this.style.backgroundColor = "#FF6B6C";
+            };
+            customButton.onmouseout = function () {
+              this.style.backgroundColor = "#FF595A";
+            };
+          }
+        } 
+      } else {
+        if (fileImageValue) {
+          const formData = new FormData();
+          formData.append("file", fileImageValue);
+          try {
+            const response = await fetch(
+              `http://172.203.155.199:8000/people/${docnumberValue}/image`,
+              {
+                method: "PATCH",
+                body: formData,
+              }
+            );
+
+            if (!response.ok) {
+              throw new Error(`Error HTTP: ${response.status}`);
+            }
+          } catch (error) {
+            console.error("Error al subir el archivo:", error);
+          }
+        }
+        window.location.reload();
       }
     } catch (error) {
-      console.error('Hubo un error:', error);
+      console.error("Hubo un error:", error);
     }
+  };
 
-    if(fileImageValue){
-      const formData = new FormData();
-      formData.append("file", fileImageValue);
-      try {
-        const response = await fetch(`http://172.203.155.199:8000/people/${docnumberValue}/image`, { 
-          method: 'PATCH', 
-          body: formData,
-        });
-    
-        if (!response.ok) {
-          throw new Error(`Error HTTP: ${response.status}`);
-        }
-    
-        const data = await response.json();
-        console.log('Archivo subido con éxito:', data);
-      } catch (error) {
-        console.error('Error al subir el archivo:', error);
-      }
-    }
-  }
-  
   const manejarErrorImagen = () => {
     setImagen("/images/avatar");
   };
   //#endregion Validations
 
-  const updateImage=(file)=>{
-    setFileImagen(file)
+  const updateImage = (file) => {
+    setFileImagen(file);
     const newImageSrc = URL.createObjectURL(file);
     setImagen(newImageSrc);
-  }
+  };
 
   return (
     <Box
@@ -336,7 +363,9 @@ const UserForm = ({
               <FormLabel
                 sx={{ color: "white", "&.Mui-focused": { color: "white" } }}
               >
-                <Typography variant="subtitle2" sx={{color: "white"}}>Tipo de documento</Typography>
+                <Typography variant="subtitle2" sx={{ color: "white" }}>
+                  Tipo de documento
+                </Typography>
               </FormLabel>
               <RadioGroup
                 row
@@ -345,17 +374,37 @@ const UserForm = ({
               >
                 <FormControlLabel
                   value="Cédula"
-                  control={<Radio sx={{ color: "white", '&.Mui-disabled': { color: "gray"} }} />}
+                  control={
+                    <Radio
+                      sx={{
+                        color: "white",
+                        "&.Mui-disabled": { color: "gray" },
+                      }}
+                    />
+                  }
                   label="Cédula"
-                  sx={{ "& .MuiTypography-root": { color: "white" }, "& .MuiTypography-root.Mui-disabled": { color: "gray" }}}
-                  disabled = {!isnew}
+                  sx={{
+                    "& .MuiTypography-root": { color: "white" },
+                    "& .MuiTypography-root.Mui-disabled": { color: "gray" },
+                  }}
+                  disabled={!isnew}
                 />
                 <FormControlLabel
                   value="Tarjeta de identidad"
-                  control={<Radio sx={{ color: "white", '&.Mui-disabled': { color: "gray"} }} />}
-                  disabled = {!isnew}
+                  control={
+                    <Radio
+                      sx={{
+                        color: "white",
+                        "&.Mui-disabled": { color: "gray" },
+                      }}
+                    />
+                  }
+                  disabled={!isnew}
                   label="Tarjeta de identidad"
-                  sx={{ "& .MuiTypography-root": { color: "white" }, "& .MuiTypography-root.Mui-disabled": { color: "gray" }}}
+                  sx={{
+                    "& .MuiTypography-root": { color: "white" },
+                    "& .MuiTypography-root.Mui-disabled": { color: "gray" },
+                  }}
                 />
               </RadioGroup>
             </FormControl>
@@ -363,7 +412,9 @@ const UserForm = ({
               <FormLabel
                 sx={{ color: "white", "&.Mui-focused": { color: "white" } }}
               >
-                <Typography variant="subtitle2" sx={{color: "white"}}>Género</Typography>
+                <Typography variant="subtitle2" sx={{ color: "white" }}>
+                  Género
+                </Typography>
               </FormLabel>
               <RadioGroup
                 row
@@ -400,7 +451,9 @@ const UserForm = ({
                 </Stack>
               </RadioGroup>
             </FormControl>
-            <Typography variant="subtitle2" sx={{color: "white"}}>Fecha de Nacimiento</Typography>
+            <Typography variant="subtitle2" sx={{ color: "white" }}>
+              Fecha de Nacimiento
+            </Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 format="YYYY-MM-DD"
@@ -461,7 +514,7 @@ const UserForm = ({
                 "& .MuiInputBase-input.Mui-disabled": {
                   WebkitTextFillColor: "gray",
                 },
-                "& label.Mui-disabled": { color: "gray" }
+                "& label.Mui-disabled": { color: "gray" },
               }}
             />
             <TextField

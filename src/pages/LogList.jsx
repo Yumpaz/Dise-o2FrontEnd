@@ -32,12 +32,9 @@ const LogList = () => {
   const [Datef, setDatef] = useState("");
   const deleteLogs = async (logId) => {
     try {
-      const response = await fetch(
-        `http://172.203.155.199:8000/log/${logId}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const response = await fetch(`http://172.203.155.199:8000/log/${logId}`, {
+        method: "DELETE",
+      });
 
       if (!response.ok) {
         throw new Error("Error al eliminar el usuario");
@@ -58,6 +55,13 @@ const LogList = () => {
         throw new Error("Error en la respuesta de la red");
       }
       const data = await respuesta.json();
+      data.sort((a, b) => {
+        const dateA = new Date(a.created_at);
+        const dateB = new Date(b.created_at);
+
+        return dateB - dateA;
+      });
+
       setDatos(data);
     } catch (error) {
       console.error("error:", error);
@@ -235,7 +239,7 @@ const LogList = () => {
                 </TableCell>
                 <TableCell align="center">
                   {
-                    <IconButton onClick={()=>deleteLogs(row.log_id)}>
+                    <IconButton onClick={() => deleteLogs(row.log_id)}>
                       <DeleteForeverIcon
                         sx={{ width: "30px", height: "30px", color: "red" }}
                       />

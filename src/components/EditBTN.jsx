@@ -1,8 +1,9 @@
-import React, { useRef } from 'react';
-import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
+import React, { useRef } from "react";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
+import swal from "sweetalert";
 
-const EditBtn = ({setImage}) => {
+const EditBtn = ({ setImage }) => {
   const fileInputRef = useRef(null);
 
   const handleIconClick = () => {
@@ -13,14 +14,44 @@ const EditBtn = ({setImage}) => {
     const file = event.target.files[0];
     if (file) {
       // Comprobar el tipo de archivo
-      if (!file.type.match('image/png') && !file.type.match('image/jpeg')) {
-        alert('Solo se permiten archivos PNG o JPG.');
+      if (!file.type.match("image/png") && !file.type.match("image/jpeg")) {
+        swal({
+          title: "Archivo no permitido",
+          text: "Solo se permiten archivos PNG o JPG.",
+          icon: "warning",
+          button: { text: "Aceptar", className: "custom-button" },
+        });
+        var customButton = document.querySelector(".custom-button");
+        if (customButton) {
+          customButton.style.backgroundColor = "#FF595A";
+          customButton.onmouseover = function () {
+            this.style.backgroundColor = "#FF6B6C";
+          };
+          customButton.onmouseout = function () {
+            this.style.backgroundColor = "#FF595A";
+          };
+        }
         return;
       }
 
       // Comprobar el tamaño del archivo (2MB = 2 * 1024 * 1024 bytes)
       if (file.size > 2 * 1024 * 1024) {
-        alert('El archivo es demasiado grande. Tamaño máximo permitido: 2MB.');
+        swal({
+          title: "Archivo demasiado grande",
+          text: "El archivo es demasiado grande. Tamaño máximo permitido: 2MB.",
+          icon: "error",
+          button: { text: "Aceptar", className: "custom-button" },
+        });
+        var customSizeButton = document.querySelector(".custom-button");
+        if (customSizeButton) {
+          customButton.style.backgroundColor = "#FF595A";
+          customButton.onmouseover = function () {
+            this.style.backgroundColor = "#FF6B6C";
+          };
+          customButton.onmouseout = function () {
+            this.style.backgroundColor = "#FF595A";
+          };
+        }
         return;
       }
 
@@ -46,7 +77,7 @@ const EditBtn = ({setImage}) => {
         type="file"
         accept=".jpg,.jpeg,.png"
         ref={fileInputRef}
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
         onChange={handleFileChange}
       />
     </>
@@ -54,4 +85,3 @@ const EditBtn = ({setImage}) => {
 };
 
 export default EditBtn;
-
