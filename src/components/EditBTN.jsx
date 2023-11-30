@@ -13,7 +13,6 @@ const EditBtn = ({ setImage }) => {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      // Comprobar el tipo de archivo
       if (!file.type.match("image/png") && !file.type.match("image/jpeg")) {
         swal({
           title: "Archivo no permitido",
@@ -23,8 +22,6 @@ const EditBtn = ({ setImage }) => {
         });
         return;
       }
-
-      // Comprobar el tamaño del archivo (2MB = 2 * 1024 * 1024 bytes)
       if (file.size > 2 * 1024 * 1024) {
         swal({
           title: "Archivo demasiado grande",
@@ -34,10 +31,7 @@ const EditBtn = ({ setImage }) => {
         });
         return;
       }
-
-      // Aquí puedes procesar el archivo (por ejemplo, subirlo a tu API)
       setImage(file);
-      //console.log('Archivo válido:', file);
     }
   };
 

@@ -24,6 +24,7 @@ const UserItem = (props) => {
     phone,
     photo_url,
   } = props.user;
+
   const handleDeleteUser = props.delete;
   const [open, setOpen] = React.useState(false);
   const [imagen, setImagen] = useState(photo_url);
@@ -32,7 +33,6 @@ const UserItem = (props) => {
     setImagen("/images/avatar");
   };
   const handleOpen = async () => {
-    // dummy option to log the user data
     await fetch(`http://172.203.155.199:8000/people/${document_id}`);
     setOpen(true);
   };

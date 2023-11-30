@@ -24,12 +24,16 @@ import dayjs from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 const LogList = () => {
+  //#region Inicialización
   const [logs, setDatos] = useState(null);
   const [DocType, setDocType] = useState("");
   const [searchDocNumber, setsearchDocNumber] = useState("");
   const [isValidDocNumber, setIsValidDocNumber] = useState(true);
   const [Datei, setDatei] = useState("");
   const [Datef, setDatef] = useState("");
+  //#endregion Inicialización
+
+  //#region Funciones
   const deleteLogs = async (logId) => {
     try {
       const response = await fetch(`http://172.203.155.199:8000/log/${logId}`, {
@@ -164,6 +168,7 @@ const LogList = () => {
       }
     }
   };
+//#endregion Funciones
 
   return (
     <Container sx={{ paddingTop: 5 }}>

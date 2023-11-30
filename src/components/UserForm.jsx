@@ -36,6 +36,8 @@ const UserForm = ({
   phone,
   image,
 }) => {
+
+  //#region Inicialización
   const [birthdateValue, setBirthdateValue] = useState(
     birthdate ? birthdate : null
   );
@@ -56,8 +58,9 @@ const UserForm = ({
   const [alert, setAlert] = useState(false);
   const [imageValue, setImagen] = useState(image);
   const [fileImageValue, setFileImagen] = useState(null);
+  //#endregion
 
-  //#region Validations
+  //#region Funciones
   const handleEmailChange = (e) => {
     const newEmail = e.target.value;
     setEmailValue(newEmail);
@@ -252,13 +255,13 @@ const UserForm = ({
   const manejarErrorImagen = () => {
     setImagen("/images/avatar");
   };
-  //#endregion Validations
 
   const updateImage = (file) => {
     setFileImagen(file);
     const newImageSrc = URL.createObjectURL(file);
     setImagen(newImageSrc);
   };
+  //#endregion Funciones
 
   return (
     <Box
