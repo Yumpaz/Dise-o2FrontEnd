@@ -21,16 +21,6 @@ const EditBtn = ({ setImage }) => {
           icon: "warning",
           button: { text: "Aceptar", className: "custom-button" },
         });
-        var customButton = document.querySelector(".custom-button");
-        if (customButton) {
-          customButton.style.backgroundColor = "#FF595A";
-          customButton.onmouseover = function () {
-            this.style.backgroundColor = "#FF6B6C";
-          };
-          customButton.onmouseout = function () {
-            this.style.backgroundColor = "#FF595A";
-          };
-        }
         return;
       }
 
@@ -42,16 +32,6 @@ const EditBtn = ({ setImage }) => {
           icon: "error",
           button: { text: "Aceptar", className: "custom-button" },
         });
-        var customSizeButton = document.querySelector(".custom-button");
-        if (customSizeButton) {
-          customButton.style.backgroundColor = "#FF595A";
-          customButton.onmouseover = function () {
-            this.style.backgroundColor = "#FF6B6C";
-          };
-          customButton.onmouseout = function () {
-            this.style.backgroundColor = "#FF595A";
-          };
-        }
         return;
       }
 

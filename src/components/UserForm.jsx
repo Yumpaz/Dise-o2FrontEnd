@@ -221,16 +221,6 @@ const UserForm = ({
             icon: "error",
             button: { text: "Aceptar", className: "custom-button" },
           });
-          var customButton = document.querySelector(".custom-button");
-          if (customButton) {
-            customButton.style.backgroundColor = "#FF595A";
-            customButton.onmouseover = function () {
-              this.style.backgroundColor = "#FF6B6C";
-            };
-            customButton.onmouseout = function () {
-              this.style.backgroundColor = "#FF595A";
-            };
-          }
         } 
       } else {
         if (fileImageValue) {
